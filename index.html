@@ -54,6 +54,99 @@
   dialog .msg { min-height: 20px; font-size: 13px; margin: 4px 0 6px; color: var(--up); }
   dialog .msg.info { color: var(--accent); }
   dialog .x { position: absolute; top: 14px; right: 14px; }
+
+  /* 프로필 · 마이페이지 */
+  .av { width: 30px; height: 30px; border-radius: 50%; flex: none; overflow: hidden; display: grid; place-items: center;
+    font-size: 13px; font-weight: 800; color: #fff; background: var(--accent); }
+  .av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .av.big { width: 84px; height: 84px; font-size: 32px; }
+  .me-btn { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 999px; background: var(--card); color: var(--text); }
+  .me-btn[hidden] { display: none; }
+  .me-name { max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .me-dlg { width: min(420px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow-y: auto; }
+  .me-dlg h4 { margin: 0 0 10px; font-size: 16px; font-weight: 800; }
+  .me-sec { border-top: 1px solid var(--line); padding: 18px 0 6px; margin: 0; }
+  .me-profile { display: flex; align-items: center; gap: 16px; padding-bottom: 18px; }
+  .me-photo-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn-like { font-size: 14px; font-weight: 700; cursor: pointer; border-radius: 12px; padding: 8px 14px; background: var(--fill); color: var(--sub); }
+  .btn-like:focus-within { outline: 2px solid var(--accent); }
+  button.wide { width: 100%; padding: 12px; font-size: 15px; margin-top: 4px; }
+  #meLogout { margin-top: 18px; }
+  .pw-rules { list-style: none; padding: 0; margin: -4px 0 12px; font-size: 12px; color: var(--muted); }
+  .pw-rules li::before { content: '○ '; }
+  .pw-rules li.ok { color: var(--accent); } .pw-rules li.ok::before { content: '✓ '; }
+  .pw-rules li.bad { color: var(--up); } .pw-rules li.bad::before { content: '✕ '; }
+  .animal-pick { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin: 4px 0 14px; }
+  .animal-pick button { font-size: 22px; padding: 6px 0; border-radius: 12px; background: var(--fill); border: 2px solid transparent; }
+  .animal-pick button[aria-checked="true"] { border-color: var(--accent); background: var(--card); }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; font-weight: 700; margin-bottom: 12px; cursor: pointer; }
+  .check input { width: 18px; height: 18px; margin-top: 2px; flex: none; accent-color: var(--accent); }
+  .check small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+  /* 해주계 마을 */
+  /* 입체 느낌: 하늘 → 먼 언덕 → 가까운 언덕 → 비스듬히 누운 잔디 바닥 → 주민(앞뒤 줄) */
+  .village-scene {
+    --sky1: #9fd8ff; --sky2: #e6f6ff; --hill-far: #9ccf8a; --hill-near: #7fbf68;
+    --grass1: #94d277; --grass2: #8ac96d; --road: #e9d9a8; --horizon: 36%;
+    --px: 0; --py: 0;
+    position: relative; border-radius: 18px; overflow: hidden; height: 340px; isolation: isolate;
+    background: linear-gradient(180deg, var(--sky1) 0%, var(--sky2) var(--horizon));
+  }
+  :root[data-theme="dark"] .village-scene { --sky1: #121b36; --sky2: #2a3966; --hill-far: #2c4f36; --hill-near: #264530; --grass1: #2e5a34; --grass2: #295230; --road: #6b5d3d; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .village-scene { --sky1: #121b36; --sky2: #2a3966; --hill-far: #2c4f36; --hill-near: #264530; --grass1: #2e5a34; --grass2: #295230; --road: #6b5d3d; } }
+  .v-layer { position: absolute; pointer-events: none; will-change: transform; transition: transform .25s ease-out; }
+  .v-sun { right: 7%; top: 14px; font-size: 34px; transform: translate(calc(var(--px) * -2px), calc(var(--py) * -2px)); }
+  .v-clouds { inset: 0 0 auto 0; height: 40%; transform: translate(calc(var(--px) * -4px), 0); }
+  .v-clouds span { position: absolute; font-size: 30px; opacity: .95; animation: drift 38s linear infinite; }
+  .v-clouds span:nth-child(1) { top: 10px; left: -10%; }
+  .v-clouds span:nth-child(2) { top: 34px; left: -10%; font-size: 22px; animation-duration: 52s; animation-delay: -20s; }
+  .v-clouds span:nth-child(3) { top: 4px; left: -10%; font-size: 26px; animation-duration: 45s; animation-delay: -34s; }
+  @keyframes drift { from { transform: translateX(0); } to { transform: translateX(1300px); } }
+  /* 언덕: 큰 타원을 지평선에 걸쳐 둠 (멀수록 연하고 덜 움직임) */
+  .v-hills { left: -10%; right: -10%; top: calc(var(--horizon) - 46px); height: 80px; }
+  .v-hills.far { background: radial-gradient(60% 100% at 22% 100%, var(--hill-far) 98%, transparent 100%), radial-gradient(50% 90% at 78% 100%, var(--hill-far) 98%, transparent 100%);
+    opacity: .75; transform: translate(calc(var(--px) * -6px), 0); }
+  .v-hills.near { top: calc(var(--horizon) - 26px); height: 50px;
+    background: radial-gradient(45% 100% at 8% 100%, var(--hill-near) 98%, transparent 100%), radial-gradient(40% 100% at 60% 100%, var(--hill-near) 98%, transparent 100%), radial-gradient(35% 100% at 100% 100%, var(--hill-near) 98%, transparent 100%);
+    transform: translate(calc(var(--px) * -10px), 0); }
+  /* 바닥: 평면을 뒤로 눕혀서(rotateX) 멀어질수록 좁아 보이게 */
+  .v-ground { left: 0; right: 0; top: var(--horizon); bottom: 0; perspective: 420px; perspective-origin: 50% 0%; overflow: hidden; }
+  .v-plane { position: absolute; left: -60%; right: -60%; top: 0; height: 260%; transform-origin: 50% 0%; transform: rotateX(68deg);
+    background:
+      linear-gradient(90deg, transparent 46%, var(--road) 46%, var(--road) 54%, transparent 54%),
+      repeating-linear-gradient(0deg, var(--grass1) 0 46px, var(--grass2) 46px 92px),
+      var(--grass1); }
+  .v-fog { left: 0; right: 0; top: calc(var(--horizon) - 2px); height: 40px; background: linear-gradient(180deg, var(--sky2), transparent); opacity: .7; }
+  .residents { position: absolute; inset: 0; transform: translate(calc(var(--px) * -14px), calc(var(--py) * -4px)); transition: transform .25s ease-out; }
+  .res, .prop { position: absolute; display: flex; flex-direction: column; align-items: center; text-align: center;
+    transform: translate(-50%, -100%) scale(var(--s, 1)); transform-origin: 50% 100%; }
+  .prop { pointer-events: none; line-height: 1; }
+  .res .shadow { position: absolute; left: 50%; bottom: -8px; width: 70px; height: 14px; margin-left: -35px; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(0,0,0,.28), rgba(0,0,0,0)); z-index: -1; }
+  .res.riding .shadow { width: 84px; margin-left: -42px; }
+  .res .bubble { font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 999px; background: #fff; color: #191f28;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15); position: relative; margin-bottom: 8px; white-space: nowrap; }
+  .res .bubble::after { content: ''; position: absolute; left: 50%; bottom: -5px; margin-left: -5px; border: 5px solid transparent; border-bottom: 0; border-top-color: #fff; }
+  .res .bubble.up { color: #f04452; } .res .bubble.down { color: #3182f6; }
+  .res .ride { position: relative; height: 64px; width: 80px; animation: bob 2.4s ease-in-out infinite; }
+  .res .ani { position: absolute; left: 50%; transform: translateX(-50%); bottom: 4px; font-size: 44px; line-height: 1; }
+  .res.riding .ani { font-size: 30px; bottom: 26px; z-index: 1; }
+  .res .veh { position: absolute; left: 50%; bottom: 0; font-size: 46px; line-height: 1; transform: translateX(-50%) scaleX(-1); z-index: 2; }
+  .res .crown { position: absolute; left: 50%; bottom: 50px; transform: translateX(-50%); font-size: 16px; z-index: 3; }
+  .res .tag { margin-top: 4px; font-size: 13px; font-weight: 800; color: #191f28; background: rgba(255,255,255,.85); padding: 1px 8px; border-radius: 8px; max-width: 118px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .res .car-name { font-size: 11px; color: #1f3a12; margin-top: 2px; }
+  .res.me .tag { background: var(--accent); color: #fff; }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @media (prefers-reduced-motion: reduce) { .res .ride, .v-clouds span { animation: none; } .v-layer, .residents { transition: none; } }
+  .ride-legend { margin-top: 14px; background: var(--fill); border-radius: 14px; padding: 14px 16px; }
+  .ride-legend-title { font-size: 14px; font-weight: 800; margin-bottom: 8px; }
+  .ride-legend-title small { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 4px; }
+  .ride-legend ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 6px 14px; }
+  .ride-legend li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--sub); }
+  .ride-legend li .ic { font-size: 22px; min-width: 28px; text-align: center; flex: none; white-space: nowrap; }
+  .ride-legend li b { color: var(--text); }
+  .village-empty { position: absolute; left: 50%; top: 62%; transform: translate(-50%, -50%); width: min(90%, 420px); text-align: center;
+    color: #1f3a12; font-weight: 700; background: rgba(255,255,255,.85); border-radius: 14px; padding: 14px 16px; }
   header h1 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -.6px; }
   header h1 em { font-style: normal; color: var(--accent); font-size: 17px; margin-left: 4px; }
 
@@ -211,6 +304,7 @@
     <span class="sp"></span>
     <span class="chip" id="syncChip">이 브라우저에 저장</span>
     <button type="button" id="authBtn" class="primary" hidden>로그인</button>
+    <button type="button" id="meBtn" class="me-btn" hidden aria-label="마이페이지 열기"><span class="av" id="meAv"></span><span class="me-name" id="meName"></span></button>
   </header>
 
   <dialog id="authDlg">
@@ -219,7 +313,7 @@
     <p>로그인하면 매매 기록이 계정에 저장돼서 어느 기기에서든 볼 수 있어요.</p>
     <form id="authForm">
       <label class="field">이메일<input type="email" id="authEmail" autocomplete="email" required></label>
-      <label class="field">비밀번호 (6자 이상)<input type="password" id="authPw" autocomplete="current-password" minlength="6" required></label>
+      <label class="field">비밀번호 (6~12자, 영문·숫자·특수문자)<input type="password" id="authPw" autocomplete="current-password" minlength="6" required></label>
       <div class="msg" id="authMsg"></div>
       <div class="row">
         <button type="submit" class="primary" id="loginBtn">로그인</button>
@@ -227,6 +321,52 @@
       </div>
     </form>
     <button type="button" class="google" id="googleBtn" hidden>Google 계정으로 계속하기</button>
+  </dialog>
+
+  <!-- 마이페이지 -->
+  <dialog id="meDlg" class="me-dlg">
+    <button type="button" class="icon x" id="meClose" aria-label="닫기">✕</button>
+    <h3>마이페이지</h3>
+    <p id="meEmail"></p>
+
+    <div class="me-sec me-profile">
+      <div class="av big" id="meAvBig"></div>
+      <div class="me-photo-btns">
+        <label class="btn-like">사진 바꾸기<input type="file" id="meFile" accept="image/*" hidden></label>
+        <button type="button" id="mePhotoDel">사진 삭제</button>
+      </div>
+    </div>
+
+    <div class="me-sec">
+      <label class="field">닉네임 (2~12자)<input type="text" id="meNick" maxlength="12" autocomplete="nickname"></label>
+      <div class="msg" id="meNickMsg"></div>
+      <button type="button" class="primary wide" id="meNickSave">닉네임 저장</button>
+    </div>
+
+    <div class="me-sec">
+      <h4>해주계 마을</h4>
+      <div class="field">내 동물</div>
+      <div class="animal-pick" id="meAnimals" role="radiogroup" aria-label="내 동물 고르기"></div>
+      <label class="check"><input type="checkbox" id="meVillage"> <span>마을에 참여하기<small>닉네임, 동물, 수익률(%)이 로그인한 다른 가입자에게 보여요. 금액은 보이지 않아요.</small></span></label>
+      <label class="check"><input type="checkbox" id="meShowCar"> <span>내 차 보여주기<small>타고 있는 차로 대략적인 수익금 규모를 짐작할 수 있어요.</small></span></label>
+      <div class="msg" id="meVilMsg"></div>
+      <button type="button" class="primary wide" id="meVilSave">마을 설정 저장</button>
+    </div>
+
+    <form class="me-sec" id="mePwForm" autocomplete="off">
+      <h4>비밀번호 변경</h4>
+      <label class="field">현재 비밀번호<input type="password" id="mePwCur" autocomplete="current-password" required></label>
+      <label class="field">새 비밀번호<input type="password" id="mePwNew" autocomplete="new-password" maxlength="12" required></label>
+      <ul class="pw-rules" id="mePwRules">
+        <li data-r="len">6~12자</li>
+        <li data-r="chars">영문·숫자·특수문자만 (띄어쓰기·한글 불가)</li>
+      </ul>
+      <label class="field">새 비밀번호 확인<input type="password" id="mePwNew2" autocomplete="new-password" maxlength="12" required></label>
+      <div class="msg" id="mePwMsg"></div>
+      <button type="submit" class="primary wide">비밀번호 변경</button>
+    </form>
+
+    <button type="button" class="wide" id="meLogout">로그아웃</button>
   </dialog>
 
   <!-- 실시간 환율 -->
@@ -279,6 +419,25 @@
       <div class="fun-img" id="funImg"></div>
       <figcaption id="funCredit"></figcaption>
     </figure>
+  </section>
+
+  <!-- 해주계 마을 -->
+  <section class="card" id="villageCard">
+    <div class="card-title">🏡 해주계 마을 <span class="sp"></span><small id="villageCount" style="font-size:13px;color:var(--muted);font-weight:500"></small></div>
+    <div class="village-scene" id="villageScene">
+      <div class="v-layer v-clouds" aria-hidden="true"><span>☁️</span><span>☁️</span><span>☁️</span></div>
+      <div class="v-layer v-sun" aria-hidden="true">🌞</div>
+      <div class="v-layer v-hills far" aria-hidden="true"></div>
+      <div class="v-layer v-hills near" aria-hidden="true"></div>
+      <div class="v-layer v-ground" aria-hidden="true"><div class="v-plane"></div></div>
+      <div class="v-layer v-fog" aria-hidden="true"></div>
+      <div class="residents" id="residents"></div>
+    </div>
+    <div class="ride-legend">
+      <div class="ride-legend-title">🚦 탈 것 안내 <small>수익금(평가손익 + 실현손익)에 따라 바뀌어요</small></div>
+      <ul id="rideLegend"></ul>
+    </div>
+    <p class="hint" id="villageHint">마이페이지에서 동물을 고르고 '마을에 참여하기'를 켜면 내 동물이 마을에 나타나요. 머리 위에는 수익률만 보이고 금액은 보이지 않아요.</p>
   </section>
 
   <!-- 종목 차트 -->
@@ -358,6 +517,24 @@ const HAEJUGYE_CONFIG = {
 // 가격은 국내 공식 출고가·시작가 기준 (2026년 11월 조사). 바뀌면 숫자만 고치면 돼요.
 // file: 위키미디어 공용(Wikimedia Commons)의 자유 라이선스 사진 파일 이름 → 페이지가 열릴 때 실시간으로 불러옴
 const GOODS_DATE = '2026년 11월';
+// 마을에서 탈 것 (HAEJUGYE_GOODS와 같은 순서). 치킨·아이폰 단계는 차 대신 귀여운 탈 것
+const VILLAGE_RIDES = [
+  { ride: '🛵', label: '치킨 배달 오토바이' },
+  { ride: '🛴', label: '킥보드' },
+  { ride: '🚙', label: '캐스퍼' },
+  { ride: '🚙', label: '스포티지' },
+  { ride: '🚗', label: '모델 Y' },
+  { ride: '🚘', label: 'GV80' },
+  { ride: '🏎️', label: '911' },
+  { ride: '🚘', label: '마이바흐', crown: true }
+];
+// 고를 수 있는 동물
+const VILLAGE_ANIMALS = [
+  ['dog', '🐶', '강아지'], ['cat', '🐱', '고양이'], ['rabbit', '🐰', '토끼'], ['fox', '🦊', '여우'],
+  ['bear', '🐻', '곰'], ['panda', '🐼', '판다'], ['koala', '🐨', '코알라'], ['tiger', '🐯', '호랑이'],
+  ['lion', '🦁', '사자'], ['frog', '🐸', '개구리'], ['pig', '🐷', '돼지'], ['penguin', '🐧', '펭귄'],
+  ['hamster', '🐹', '햄스터'], ['monkey', '🐵', '원숭이'], ['chick', '🐥', '병아리'], ['unicorn', '🦄', '유니콘']
+];
 const HAEJUGYE_GOODS = [
   { name: '치킨',               price: 25000,     unit: '마리', emoji: '🍗', note: '후라이드 한 마리 (약)',            file: 'Iksan_City_48_Korean_Style_Fried_chicken.jpg' },
   { name: '아이폰 18 Pro',       price: 1990000,   unit: '대',   emoji: '📱', note: '256GB 출고가',                     file: 'IPhone_18_Pro_Vector.svg' },
@@ -384,6 +561,15 @@ const HAEJUGYE_GOODS = [
       out.buys = s.buys; out.sells = s.sells;
       out.settings = { ...defaults, ...(s.settings || {}) };
     }
+    // 마이페이지: 닉네임, 프로필 사진(작게 줄인 이미지)
+    const pf = (s && s.profile) || {};
+    out.profile = {
+      nickname: typeof pf.nickname === 'string' ? pf.nickname : '',
+      avatar: typeof pf.avatar === 'string' && pf.avatar.startsWith('data:image/') ? pf.avatar : '',
+      animal: VILLAGE_ANIMALS.some(a => a[0] === pf.animal) ? pf.animal : '',
+      village: pf.village === true,          // 마을 참여 (기본: 안 함)
+      showCar: pf.showCar !== false          // 내 차 보여주기 (기본: 보여줌)
+    };
     [...out.buys, ...out.sells].forEach(r => { if (r.date == null) r.date = ''; });
     return out;
   }
@@ -548,10 +734,11 @@ const HAEJUGYE_GOODS = [
     }
   }
 
-  function renderFun(hasTrades, priced, unrealized, realizedAll) {
+  let myStanding = { pct: null, tier: -1 };   // 마을에 보낼 내 수익률·차량 단계
+  function renderFun(hasTrades, priced, unrealized, realizedAll, invested) {
     const card = $('#funCard');
     card.hidden = !hasTrades;
-    if (!hasTrades) return;
+    if (!hasTrades) { myStanding = { pct: null, tier: -1 }; scheduleVillageSync(); return; }
     if (!priced || !fx) {
       $('#funProfit').textContent = '계산 중…'; $('#funBreak').textContent = '';
       $('#funHead').textContent = '시세를 불러오고 있어요'; $('#funSub').textContent = ''; $('#funNext').hidden = true;
@@ -559,6 +746,11 @@ const HAEJUGYE_GOODS = [
       return;
     }
     const p = unrealized + realizedAll;
+    // 마을용: 수익률(%)과 탈 수 있는 차량 단계만 (금액은 보내지 않음)
+    let tier = -1;
+    if (p > 0) HAEJUGYE_GOODS.forEach((g, i) => { if (g.price <= p) tier = i; });
+    myStanding = { pct: invested > 0 ? p / invested * 100 : null, tier };
+    scheduleVillageSync();
     const chicken = HAEJUGYE_GOODS[0];
     $('#funProfit').textContent = fKrwS(p);
     $('#funProfit').className = 'stat-big num ' + sc(p);
@@ -639,8 +831,9 @@ const HAEJUGYE_GOODS = [
 
     // 수익금 재미 카드 = 보유분 평가손익 + 지금까지 실현손익 전체
     const realizedAll = realized.filter(x => !x.short).reduce((a, x) => a + x.gain, 0);
+    const soldCost = realized.filter(x => !x.short).reduce((a, x) => a + x.cost, 0);
     const hasTrades = state.buys.some(r => r.ticker && num(r.qty) > 0);
-    renderFun(hasTrades, priced, (live.length ? total - cost : 0), realizedAll);
+    renderFun(hasTrades, priced, (live.length ? total - cost : 0), realizedAll, cost + soldCost);
 
     // 보유 종목 리스트
     const box = $('#holdList');
@@ -1012,8 +1205,30 @@ const HAEJUGYE_GOODS = [
     state = normalize(s);
     Object.entries(setMap).forEach(([id, key]) => { document.getElementById(id).value = state.settings[key]; });
     renderFilter(); renderTrades(); renderSelect(); refreshPortfolio();
+    updateMe();
   }
-  const chip = (text, cls = '') => { const c = $('#syncChip'); c.textContent = text; c.className = 'chip ' + cls; };
+
+  // ---------- 프로필 표시 ----------
+  const PW_OK = /^[\x21-\x7E]{6,12}$/;     // 6~12자, 영문·숫자·특수문자 (띄어쓰기·한글 불가)
+  const displayName = () => (state.profile && state.profile.nickname) || (user ? user.email.split('@')[0] : '');
+  function paintAvatar(el) {
+    el.textContent = '';
+    if (state.profile && state.profile.avatar) {
+      const img = document.createElement('img'); img.src = state.profile.avatar; img.alt = '프로필 사진'; el.appendChild(img);
+      el.style.background = '';
+    } else {
+      const name = displayName();
+      el.textContent = name ? [...name][0].toUpperCase() : '?';
+      el.style.background = name ? badgeColor(name) : '';
+    }
+  }
+  function updateMe() {
+    if (!user) return;
+    $('#meName').textContent = displayName();
+    paintAvatar($('#meAv'));
+    if ($('#meDlg').open) paintAvatar($('#meAvBig'));
+  }
+  const chip =(text, cls = '') => { const c = $('#syncChip'); c.textContent = text; c.className = 'chip ' + cls; };
 
   const C = HAEJUGYE_CONFIG;
   const sb = (C.supabaseUrl && C.supabaseKey && window.supabase) ? window.supabase.createClient(C.supabaseUrl, C.supabaseKey) : null;
@@ -1029,7 +1244,7 @@ const HAEJUGYE_GOODS = [
     if (!sb || !user) return;
     const { error } = await sb.from('portfolios').upsert({ user_id: user.id, data: state, updated_at: new Date().toISOString() });
     if (error) { chip('저장 실패 · 잠시 뒤 다시 시도해요', 'err'); cloudTimer = setTimeout(cloudSave, 5000); }
-    else chip('☁ ' + user.email, 'ok');
+    else chip('☁ 저장됨', 'ok');
   }
   // 탭을 닫거나 다른 앱으로 넘어갈 때 남은 저장을 바로 실행
   document.addEventListener('visibilitychange', () => { if (document.hidden && cloudTimer) cloudSave(); });
@@ -1037,20 +1252,23 @@ const HAEJUGYE_GOODS = [
   async function handleSession(session) {
     const next = session && session.user || null;
     if ((next && next.id) === (user && user.id)) return; // 토큰 갱신 등은 무시
-    const btn = $('#authBtn');
     if (!next) {
       user = null;
-      btn.textContent = '로그인';
+      $('#authBtn').hidden = false; $('#meBtn').hidden = true;
+      if ($('#meDlg').open) $('#meDlg').close();
       chip('이 브라우저에 저장');
+      villageRows = []; villageSynced = '';
       applyState(loadGuest());
+      renderVillage();
       return;
     }
     chip('불러오는 중…');
     const { data, error } = await sb.from('portfolios').select('data').eq('user_id', next.id).maybeSingle();
     if (error) { chip('불러오기 실패: ' + error.message, 'err'); return; }
     user = next;
-    btn.textContent = '로그아웃';
-    if (data) { applyState(data.data); chip('☁ ' + user.email, 'ok'); return; }
+    $('#authBtn').hidden = true; $('#meBtn').hidden = false;
+    villageSynced = ''; loadVillage();
+    if (data) { applyState(data.data); chip('☁ 저장됨', 'ok'); return; }
     // 처음 로그인: 이 브라우저에 있던 기록을 계정으로 옮길지 물어봄
     const guest = loadGuest(), n = guest.buys.length + guest.sells.length;
     if (n && confirm(`이 브라우저에 입력해 둔 매매 기록 ${n}건을 내 계정으로 옮길까요?`)) {
@@ -1060,6 +1278,159 @@ const HAEJUGYE_GOODS = [
     await cloudSave();
   }
 
+  // ---------- 해주계 마을 ----------
+  // 마을에는 닉네임·동물·수익률(%)·차량 단계만 올라가요. 금액은 보내지 않아요.
+  let villageRows = [], villageSynced = '', villageTimer = null, villageMissing = false;
+  const animalOf = (k) => (VILLAGE_ANIMALS.find(a => a[0] === k) || [k, '🐾'])[1];
+  const tableMissing = (err) => err && (err.code === 'PGRST205' || err.code === '42P01');
+  function scheduleVillageSync() {
+    if (!sb || !user) return;
+    clearTimeout(villageTimer); villageTimer = setTimeout(syncVillage, 1500);
+  }
+  async function syncVillage() {
+    clearTimeout(villageTimer);
+    if (!sb || !user || villageMissing) return;
+    const pf = state.profile;
+    if (!pf.village || !pf.animal) {          // 참여 안 함 → 마을에서 내 자리 빼기
+      if (villageSynced === 'off') return;
+      const { error } = await sb.from('village').delete().eq('user_id', user.id);
+      if (error) { if (tableMissing(error)) { villageMissing = true; renderVillage(); } return; }
+      villageSynced = 'off'; loadVillage(); return;
+    }
+    const pct = myStanding.pct == null ? null : Math.max(-100, Math.min(1000000, Math.round(myStanding.pct * 100) / 100));
+    const row = { user_id: user.id, nickname: [...displayName()].slice(0, 12).join(''), animal: pf.animal, return_pct: pct, car_tier: pf.showCar ? myStanding.tier : -1 };
+    const key = JSON.stringify(row);
+    if (key === villageSynced) return;        // 바뀐 게 없으면 다시 보내지 않음
+    const { error } = await sb.from('village').upsert({ ...row, updated_at: new Date().toISOString() });
+    if (error) {
+      if (tableMissing(error)) { villageMissing = true; renderVillage(); }
+      else $('#villageHint').textContent = '마을에 내 정보를 올리지 못했어요: ' + error.message;
+      return;
+    }
+    villageSynced = key; loadVillage();
+  }
+  async function loadVillage() {
+    if (!sb || !user) { renderVillage(); return; }
+    const { data, error } = await sb.from('village').select('user_id,nickname,animal,return_pct,car_tier')
+      .order('return_pct', { ascending: false, nullsFirst: false }).limit(200);
+    if (error) {
+      if (tableMissing(error)) villageMissing = true;
+      else $('#villageHint').textContent = '마을을 불러오지 못했어요: ' + error.message;
+      renderVillage(); return;
+    }
+    villageMissing = false; villageRows = data || []; renderVillage();
+  }
+  // 장식 (x: 가로 %, t: 깊이 0=맨 뒤 ~ 1=맨 앞, size: 글자 크기)
+  const VILLAGE_PROPS = [
+    { e: '🏡', x: 92, t: 0.02, size: 44 }, { e: '🌳', x: 6, t: 0.08, size: 46 }, { e: '🌲', x: 96, t: 0.3, size: 44 },
+    { e: '🌳', x: 2, t: 0.55, size: 50 }, { e: '🌷', x: 9, t: 0.95, size: 22 }, { e: '🌼', x: 93, t: 1, size: 22 }, { e: '🪨', x: 20, t: 0.0, size: 20 }
+  ];
+  const hash01 = (s) => { let h = 7; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return (h % 1000) / 1000; };
+
+  function renderVillage() {
+    const box = $('#residents'), cnt = $('#villageCount'), scene = $('#villageScene');
+    const W = scene.clientWidth || 600;
+    const rowsData = (sb && user && !villageMissing) ? villageRows : [];
+    // 한 줄에 몇 명? 화면 폭에 맞춰서. 수익률 높은 사람이 앞줄.
+    const perRow = Math.max(2, Math.min(6, Math.floor(W / 125)));
+    const rowCount = Math.max(1, Math.ceil(rowsData.length / perRow));
+    // 줄 간격: 앞줄일수록 크게 그려지니 간격도 넓게 → 말풍선이 앞뒤 줄 이름표를 가리지 않음
+    const SKY = 112, ITEM_H = 152;                           // 하늘 높이, 주민 한 명의 키(크기 1 기준, 말풍선 꼬리·통통 튀는 높이 포함)
+    const scaleAt = (t) => 0.66 + 0.34 * t;                  // 멀수록 작게
+    const tRow = (r) => rowCount === 1 ? 1 : 1 - r / (rowCount - 1);
+    const backY = SKY + 70;
+    const yRow = [];
+    yRow[rowCount - 1] = backY;
+    for (let r = rowCount - 2; r >= 0; r--) yRow[r] = yRow[r + 1] + ITEM_H * scaleAt(tRow(r));
+    const H = Math.max(340, Math.round(yRow[0] + 14));
+    if (rowCount === 1) yRow[0] = H - 14;
+    const frontY = yRow[0];
+    scene.style.height = H + 'px';
+    scene.style.setProperty('--horizon', SKY + 'px');
+    const place = (el, x, t, z, y) => {
+      el.style.left = x + '%';
+      el.style.top = (y != null ? y : backY + t * (frontY - backY)) + 'px';
+      el.style.setProperty('--s', scaleAt(t).toFixed(3));
+      el.style.zIndex = String(10 + Math.round(t * 80) + (z || 0));
+      el.style.filter = t < 0.5 ? `saturate(${0.8 + t * 0.4})` : '';  // 멀수록 살짝 흐리게
+    };
+    box.textContent = '';
+    VILLAGE_PROPS.forEach(p => {
+      const el = document.createElement('div'); el.className = 'prop'; el.setAttribute('aria-hidden', 'true');
+      el.textContent = p.e; el.style.fontSize = p.size + 'px'; place(el, p.x, p.t, -1); box.appendChild(el);
+    });
+
+    const empty = (t) => { const d = document.createElement('div'); d.className = 'village-empty'; d.textContent = t; d.style.zIndex = '200'; box.appendChild(d); cnt.textContent = ''; };
+    if (!sb) return empty('마을은 로그인 기능이 켜져 있어야 볼 수 있어요.');
+    if (!user) return empty('🔒 로그인하면 마을에 놀러 갈 수 있어요!');
+    if (villageMissing) return empty('마을을 짓는 중이에요 🚧 (관리자: Supabase에서 supabase-village.sql을 실행해 주세요)');
+    if (!villageRows.length) return empty('아직 아무도 없어요. 마이페이지에서 첫 주민이 되어 보세요! 🏡');
+    cnt.textContent = `주민 ${villageRows.length}명`;
+
+    villageRows.forEach((r, i) => {
+      const row = Math.floor(i / perRow), col = i % perRow;
+      const inRow = Math.min(perRow, villageRows.length - row * perRow);
+      const t = tRow(row);
+      const spread = 0.6 + 0.4 * t;                          // 뒤로 갈수록 가운데로 모임 (원근)
+      const stagger = (row % 2) ? (100 / inRow) * 0.22 : 0;  // 줄마다 살짝 엇갈리게
+      const jitter = (hash01(r.user_id) - 0.5) * 4;
+      const x = 50 + (((col + 0.5) / inRow) * 100 - 50 + stagger + jitter) * spread * 0.86;
+
+      const pct = r.return_pct == null ? null : Number(r.return_pct);
+      const ride = r.car_tier >= 0 ? VILLAGE_RIDES[r.car_tier] : null;
+      const el = document.createElement('div');
+      el.className = 'res' + (ride ? ' riding' : '') + (r.user_id === user.id ? ' me' : '');
+      const mk = (cls, text, parent = el) => { const s = document.createElement(cls === 'ride' ? 'div' : 'span'); s.className = cls; if (text != null) s.textContent = text; parent.appendChild(s); return s; };
+      const b = mk('bubble', pct == null ? '수익률 –' : fPct(pct));
+      if (pct != null) b.classList.add(pct > 0 ? 'up' : pct < 0 ? 'down' : 'flat');
+      const rd = mk('ride', null);
+      rd.style.animationDelay = ((i % 7) * 0.35) + 's';
+      mk('shadow', null, rd);
+      mk('ani', animalOf(r.animal), rd);
+      if (ride) { mk('veh', ride.ride, rd); if (ride.crown) mk('crown', '👑', rd); }
+      mk('tag', r.nickname);
+      mk('car-name', ride ? ride.label : '🚶 걸어 다니는 중');
+      el.title = `${r.nickname} · 수익률 ${pct == null ? '–' : fPct(pct)}${ride ? ' · ' + ride.label : ''}`;
+      place(el, x, t, 0, yRow[row]);
+      box.appendChild(el);
+    });
+  }
+
+  // 마우스(또는 손가락)를 따라 층마다 다른 속도로 움직여서 깊이감 주기
+  (() => {
+    const scene = $('#villageScene');
+    const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) {
+      scene.addEventListener('pointermove', (e) => {
+        const r = scene.getBoundingClientRect();
+        scene.style.setProperty('--px', (((e.clientX - r.left) / r.width) - 0.5) * 2);
+        scene.style.setProperty('--py', (((e.clientY - r.top) / r.height) - 0.5) * 2);
+      });
+      scene.addEventListener('pointerleave', () => { scene.style.setProperty('--px', 0); scene.style.setProperty('--py', 0); });
+    }
+    // 화면 폭이 바뀌면 줄 배치를 다시 계산
+    let lastW = 0;
+    if (window.ResizeObserver) new ResizeObserver(() => {
+      const w = scene.clientWidth; if (Math.abs(w - lastW) < 20) return; lastW = w; renderVillage();
+    }).observe(scene);
+  })();
+  setInterval(() => { if (user) loadVillage(); }, 60_000);
+  // 탈 것 안내 (HAEJUGYE_GOODS 가격에서 자동으로 만들어서, 가격을 고치면 안내도 같이 바뀜)
+  function renderRideLegend() {
+    const man = (won) => {
+      const eok = Math.floor(won / 1e8), m = Math.round((won % 1e8) / 1e3) / 10;   // 만원 단위, 소수 첫째 자리까지
+      const mStr = m ? m.toLocaleString('ko-KR', { maximumFractionDigits: 1 }) + '만' : '';
+      return (eok ? eok + '억' + (mStr ? ' ' : '') : '') + mStr + '원';
+    };
+    const items = [['🚶', '걸어 다니는 중', '수익 0원 이하, 또는 차 숨김']];
+    VILLAGE_RIDES.forEach((r, i) => {
+      const g = HAEJUGYE_GOODS[i]; if (!g) return;
+      items.push([r.ride + (r.crown ? '👑' : ''), r.label, `수익 ${man(g.price)} 이상`]);
+    });
+    $('#rideLegend').innerHTML = items.map(([ic, name, cond]) =>
+      `<li><span class="ic">${ic}</span><span><b>${esc(name)}</b> · ${esc(cond)}</span></li>`).join('');
+  }
+  renderRideLegend();
   if (sb) {
     const dlg = $('#authDlg'), msg = $('#authMsg');
     const say = (t, info) => { msg.textContent = t; msg.className = 'msg' + (info ? ' info' : ''); };
@@ -1071,10 +1442,7 @@ const HAEJUGYE_GOODS = [
     }[m] || m);
     $('#authBtn').hidden = false;
     $('#googleBtn').hidden = !C.googleLogin;
-    $('#authBtn').addEventListener('click', async () => {
-      if (user) { await cloudSave(); await sb.auth.signOut(); return; }
-      say(''); dlg.showModal();
-    });
+    $('#authBtn').addEventListener('click', () => { say(''); dlg.showModal(); });
     $('#authClose').addEventListener('click', () => dlg.close());
     $('#authForm').addEventListener('submit', async (e) => {
       e.preventDefault(); say('로그인 중…', true);
@@ -1083,19 +1451,105 @@ const HAEJUGYE_GOODS = [
     });
     $('#signupBtn').addEventListener('click', async () => {
       const f = $('#authForm'); if (!f.reportValidity()) return;
+      if (!PW_OK.test($('#authPw').value)) { say('비밀번호는 6~12자의 영문·숫자·특수문자로 만들어 주세요. (띄어쓰기·한글 불가)'); return; }
       say('가입 중…', true);
       const { data, error } = await sb.auth.signUp({ email: $('#authEmail').value.trim(), password: $('#authPw').value, options: { emailRedirectTo: location.origin } });
       if (error) say(ko(error.message));
       else if (!data.session) say('확인 메일을 보냈어요. 메일의 링크를 누른 뒤 로그인하세요.', true);
       else { dlg.close(); $('#authPw').value = ''; }
     });
+    // ----- 마이페이지 -----
+    const me = $('#meDlg');
+    const meSay = (id, t, info) => { const m = $(id); m.textContent = t; m.className = 'msg' + (info ? ' info' : ''); };
+    function saveProfile(patch) {
+      state.profile = { ...state.profile, ...patch };
+      updateMe(); paintAvatar($('#meAvBig'));
+      scheduleVillageSync();
+      clearTimeout(cloudTimer); return cloudSave();
+    }
+    // 동물 고르기 버튼
+    let pickedAnimal = '';
+    $('#meAnimals').innerHTML = VILLAGE_ANIMALS.map(([k, e, n]) =>
+      `<button type="button" role="radio" aria-checked="false" data-animal="${k}" title="${n}" aria-label="${n}">${e}</button>`).join('');
+    const markAnimal = (k) => { pickedAnimal = k; document.querySelectorAll('#meAnimals button').forEach(b => b.setAttribute('aria-checked', String(b.dataset.animal === k))); };
+    $('#meAnimals').addEventListener('click', (e) => { const b = e.target.closest('[data-animal]'); if (b) markAnimal(b.dataset.animal); });
+    $('#meVilSave').addEventListener('click', async () => {
+      const village = $('#meVillage').checked, showCar = $('#meShowCar').checked;
+      if (village && !pickedAnimal) { meSay('#meVilMsg', '마을에 참여하려면 동물을 먼저 골라 주세요.'); return; }
+      await saveProfile({ animal: pickedAnimal, village, showCar });
+      await syncVillage();
+      meSay('#meVilMsg', village ? `${animalOf(pickedAnimal)} 마을에 이사 왔어요! 위쪽 '해주계 마을'을 확인해 보세요.` : '마을에서 나왔어요. 다른 가입자에게 내 정보가 보이지 않아요.', true);
+    });
+    $('#meBtn').addEventListener('click', () => {
+      $('#meEmail').textContent = user.email;
+      $('#meNick').value = state.profile.nickname || '';
+      markAnimal(state.profile.animal || '');
+      $('#meVillage').checked = state.profile.village;
+      $('#meShowCar').checked = state.profile.showCar;
+      ['#meNickMsg', '#mePwMsg', '#meVilMsg'].forEach(id => meSay(id, ''));
+      $('#mePwForm').reset(); checkPwRules();
+      paintAvatar($('#meAvBig'));
+      me.showModal();
+    });
+    $('#meClose').addEventListener('click', () => me.close());
+    $('#meLogout').addEventListener('click', async () => { if (cloudTimer) await cloudSave(); me.close(); await sb.auth.signOut(); });
+
+    // 프로필 사진: 가운데를 정사각형으로 잘라 160px로 줄여 저장 (용량 약 10KB)
+    $('#meFile').addEventListener('change', async (e) => {
+      const file = e.target.files && e.target.files[0]; e.target.value = '';
+      if (!file) return;
+      if (!file.type.startsWith('image/')) { meSay('#meNickMsg', '이미지 파일만 올릴 수 있어요.'); return; }
+      try {
+        const url = URL.createObjectURL(file);
+        const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = url; });
+        const s = Math.min(img.naturalWidth, img.naturalHeight), size = 160;
+        const cv = document.createElement('canvas'); cv.width = cv.height = size;
+        cv.getContext('2d').drawImage(img, (img.naturalWidth - s) / 2, (img.naturalHeight - s) / 2, s, s, 0, 0, size, size);
+        URL.revokeObjectURL(url);
+        await saveProfile({ avatar: cv.toDataURL('image/jpeg', 0.85) });
+        meSay('#meNickMsg', '프로필 사진을 바꿨어요.', true);
+      } catch (err) { meSay('#meNickMsg', '사진을 읽지 못했어요. 다른 사진으로 해보세요.'); }
+    });
+    $('#mePhotoDel').addEventListener('click', async () => { await saveProfile({ avatar: '' }); meSay('#meNickMsg', '프로필 사진을 지웠어요.', true); });
+
+    // 닉네임
+    $('#meNickSave').addEventListener('click', async () => {
+      const nick = $('#meNick').value.trim().replace(/\s+/g, ' ');
+      if ([...nick].length < 2 || [...nick].length > 12) { meSay('#meNickMsg', '닉네임은 2~12자로 정해 주세요.'); return; }
+      await saveProfile({ nickname: nick });
+      meSay('#meNickMsg', `이제 '${nick}'(으)로 보여요.`, true);
+    });
+
+    // 비밀번호 변경
+    function checkPwRules() {
+      const v = $('#mePwNew').value;
+      const set = (r, ok) => { const li = $(`#mePwRules [data-r="${r}"]`); li.classList.toggle('ok', !!v && ok); li.classList.toggle('bad', !!v && !ok); };
+      set('len', v.length >= 6 && v.length <= 12);
+      set('chars', /^[\x21-\x7E]*$/.test(v));
+    }
+    $('#mePwNew').addEventListener('input', checkPwRules);
+    $('#mePwForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const cur = $('#mePwCur').value, nw = $('#mePwNew').value, nw2 = $('#mePwNew2').value;
+      if (!PW_OK.test(nw)) { meSay('#mePwMsg', '새 비밀번호는 6~12자의 영문·숫자·특수문자로 만들어 주세요.'); return; }
+      if (nw !== nw2) { meSay('#mePwMsg', '새 비밀번호 두 칸이 서로 달라요.'); return; }
+      if (nw === cur) { meSay('#mePwMsg', '지금 비밀번호와 다른 비밀번호를 넣어 주세요.'); return; }
+      meSay('#mePwMsg', '확인 중…', true);
+      const chk = await sb.auth.signInWithPassword({ email: user.email, password: cur });
+      if (chk.error) { meSay('#mePwMsg', '현재 비밀번호가 맞지 않아요.'); return; }
+      const { error } = await sb.auth.updateUser({ password: nw });
+      if (error) { meSay('#mePwMsg', '변경하지 못했어요: ' + ko(error.message)); return; }
+      $('#mePwForm').reset(); checkPwRules();
+      meSay('#mePwMsg', '비밀번호를 바꿨어요. 다음 로그인부터 새 비밀번호를 쓰세요.', true);
+    });
+
     $('#googleBtn').addEventListener('click', () => sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin } }));
     // 페이지를 열 때(INITIAL_SESSION)와 로그인/로그아웃 때 호출됨
     sb.auth.onAuthStateChange((_event, session) => { setTimeout(() => handleSession(session), 0); });
   }
 
   // ---------- 시작 ----------
-  renderFilter(); renderTrades(); renderSelect(); refreshPortfolio(); loadFx(); loadGoodsImages();
+  renderFilter(); renderTrades(); renderSelect(); refreshPortfolio(); loadFx(); loadGoodsImages(); renderVillage();
 })();
 </script>
 </body>
