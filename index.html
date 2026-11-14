@@ -62,6 +62,36 @@
   .av.big { width: 84px; height: 84px; font-size: 32px; }
   .me-btn { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 999px; background: var(--card); color: var(--text); }
   .me-btn[hidden] { display: none; }
+  .auth-links { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 14px; color: var(--muted); font-size: 13px; }
+  button.link { background: none; padding: 2px 4px; font-size: 13px; font-weight: 500; color: var(--sub); text-decoration: underline; text-underline-offset: 3px; }
+  .find-tips { margin: 0 0 16px; padding-left: 18px; font-size: 14px; color: var(--sub); line-height: 1.7; }
+
+  /* 시작 가이드 */
+  .guide-btn { padding: 6px 12px; font-size: 13px; border-radius: 999px; background: var(--card); color: var(--sub); }
+  .guide-btn b { color: var(--accent); margin-left: 2px; }
+  .guide-btn.done b { color: var(--muted); }
+  .guide-dlg { width: min(460px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow-y: auto; overflow-x: hidden; }
+  .guide-prog { display: flex; align-items: center; gap: 10px; margin: -6px 0 16px; font-size: 13px; color: var(--muted); }
+  .guide-prog .bar { flex: 1; height: 8px; background: var(--fill); border-radius: 999px; overflow: hidden; }
+  .guide-prog .bar span { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .4s; }
+  .guide-step { background: var(--fill); border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; }
+  .guide-step h4 { margin: 0 0 8px; font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+  .guide-step h4 .ok { color: var(--accent); font-size: 13px; font-weight: 700; }
+  .guide-step ul { list-style: none; margin: 0; padding: 0; }
+  .guide-step li { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 14px; }
+  .guide-step li + li { border-top: 1px dashed var(--line); }
+  .guide-step .ck { width: 22px; height: 22px; border-radius: 50%; flex: none; display: grid; place-items: center; font-size: 13px; font-weight: 800;
+    border: 2px solid var(--line); color: transparent; background: var(--card); }
+  .guide-step li.done .ck { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .guide-step li.done .txt { color: var(--muted); text-decoration: line-through; }
+  .guide-step .txt { flex: 1; min-width: 0; }
+  .guide-step li button { padding: 5px 10px; font-size: 12px; border-radius: 10px; background: var(--card); color: var(--accent); flex: none; }
+  .guide-step li.done button { visibility: hidden; }
+  .guide-done { text-align: center; font-weight: 800; color: var(--accent); background: var(--fill); border-radius: 14px; padding: 12px; margin-bottom: 12px; }
+  .guide-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; }
+  .guide-foot .check { margin: 0; font-size: 13px; font-weight: 500; color: var(--sub); align-items: center; }
+  .guide-pulse { animation: guidePulse 1s ease-in-out 3; border-radius: 16px; }
+  @keyframes guidePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(49,130,246,0); } 50% { box-shadow: 0 0 0 6px rgba(49,130,246,.45); } }
   .me-name { max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .me-dlg { width: min(420px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow-y: auto; }
   .me-dlg h4 { margin: 0 0 10px; font-size: 16px; font-weight: 800; }
@@ -141,10 +171,24 @@
   .ride-legend { margin-top: 14px; background: var(--fill); border-radius: 14px; padding: 14px 16px; }
   .ride-legend-title { font-size: 14px; font-weight: 800; margin-bottom: 8px; }
   .ride-legend-title small { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 4px; }
-  .ride-legend ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 6px 14px; }
+  .ride-legend ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px 18px; }
   .ride-legend li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--sub); }
   .ride-legend li .ic { font-size: 22px; min-width: 28px; text-align: center; flex: none; white-space: nowrap; }
   .ride-legend li b { color: var(--text); }
+  .ride-legend li .cars { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; line-height: 1.5; }
+  .ride-legend li { align-items: flex-start; }
+  .ride-legend li .ic { line-height: 1.2; }
+  .ride-note { margin: 10px 0 0; font-size: 12px; color: var(--muted); }
+  /* 진짜 3D (three.js) — 켜지면 위의 입체 느낌 층들은 숨김 */
+  .v3d-canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; z-index: 0; }
+  .village-scene:not(.is-3d) .v3d-canvas, .village-scene:not(.is-3d) .v3d-ui { display: none; }
+  .village-scene.is-3d .v-layer, .village-scene.is-3d .res, .village-scene.is-3d .prop { display: none; }
+  .village-scene.is-3d .residents { transform: none; pointer-events: none; z-index: 1; }
+  .v3d-ui { position: absolute; z-index: 2; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 5px 11px;
+    background: rgba(255,255,255,.9); color: #333; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+  .v3d-hint { left: 10px; bottom: 10px; pointer-events: none; }
+  .v3d-rotate { right: 10px; bottom: 10px; border: 0; cursor: pointer; font: inherit; font-size: 12px; font-weight: 800; }
+  .v3d-rotate.on { background: var(--accent); color: #fff; }
   .village-empty { position: absolute; left: 50%; top: 62%; transform: translate(-50%, -50%); width: min(90%, 420px); text-align: center;
     color: #1f3a12; font-weight: 700; background: rgba(255,255,255,.85); border-radius: 14px; padding: 14px 16px; }
   header h1 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -.6px; }
@@ -236,6 +280,15 @@
   /* 보유 종목 리스트 */
   .hold { display: flex; align-items: center; gap: 12px; padding: 12px 10px; margin: 0 -10px; border-radius: 14px; cursor: pointer; }
   .hold:hover { background: var(--hover); }
+  /* 손실 구간별 색 (빨강=상승인 한국식이라 손실에는 빨강을 쓰지 않음) */
+  .hold[class*="tier-"] { border-left: 4px solid var(--tc); background: color-mix(in srgb, var(--tc) 8%, transparent); margin-bottom: 6px; }
+  .hold.tier-1 { --tc: #3182f6; } .hold.tier-2 { --tc: #f59f00; } .hold.tier-3 { --tc: #f76707; }
+  .hold.tier-4 { --tc: #7950f2; } .hold.tier-5 { --tc: #495057; }
+  :root[data-theme="dark"] .hold.tier-5 { --tc: #adb5bd; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hold.tier-5 { --tc: #adb5bd; } }
+  .tier-chip { display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 800; color: #fff; background: var(--tc); padding: 2px 8px; border-radius: 999px; }
+  .tier-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 12px; font-size: 12px; color: var(--muted); }
+  .tier-legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--tc); margin-right: 4px; vertical-align: -1px; }
   .badge { width: 42px; height: 42px; border-radius: 50%; flex: none; display: grid; place-items: center;
     font-size: 12px; font-weight: 800; color: #fff; letter-spacing: -.3px; }
   .hold .nm { flex: 1; min-width: 0; }
@@ -304,6 +357,7 @@
     <span class="sp"></span>
     <span class="chip" id="syncChip">이 브라우저에 저장</span>
     <button type="button" id="authBtn" class="primary" hidden>로그인</button>
+    <button type="button" id="guideBtn" class="guide-btn" aria-label="시작 가이드 열기">❔ 가이드 <b id="guideCount">0/7</b></button>
     <button type="button" id="meBtn" class="me-btn" hidden aria-label="마이페이지 열기"><span class="av" id="meAv"></span><span class="me-name" id="meName"></span></button>
   </header>
 
@@ -321,6 +375,73 @@
       </div>
     </form>
     <button type="button" class="google" id="googleBtn" hidden>Google 계정으로 계속하기</button>
+    <div class="auth-links"><button type="button" class="link" id="findIdBtn">아이디 찾기</button><span>·</span><button type="button" class="link" id="findPwBtn">비밀번호 찾기</button></div>
+  </dialog>
+
+  <!-- 아이디·비밀번호 찾기 -->
+  <dialog id="findDlg">
+    <button type="button" class="icon x" id="findClose" aria-label="닫기">✕</button>
+    <div id="findIdView">
+      <h3>아이디 찾기</h3>
+      <p>해주계의 아이디는 <b>가입할 때 쓴 이메일 주소</b>예요.</p>
+      <ul class="find-tips">
+        <li>자주 쓰는 이메일(네이버, 지메일 등)로 로그인해 보세요.</li>
+        <li>로그인돼 있는 다른 기기가 있다면 <b>마이페이지</b> 맨 위에서 이메일을 확인할 수 있어요.</li>
+        <li>이메일은 기억나는데 비밀번호를 모르겠다면 아래 버튼을 누르세요.</li>
+      </ul>
+      <button type="button" class="primary wide" id="toFindPw">비밀번호 찾기로 가기</button>
+    </div>
+    <form id="findPwView" hidden>
+      <h3>비밀번호 찾기</h3>
+      <p>가입한 이메일을 넣으면 <b>비밀번호를 다시 정하는 링크</b>를 메일로 보내드려요. 메일의 링크를 누르면 해주계가 열리고 새 비밀번호를 정할 수 있어요.</p>
+      <label class="field">가입한 이메일<input type="email" id="findEmail" autocomplete="email" required></label>
+      <div class="msg" id="findMsg"></div>
+      <button type="submit" class="primary wide">재설정 메일 보내기</button>
+    </form>
+  </dialog>
+
+  <!-- 새 비밀번호 정하기 (메일 링크로 들어왔을 때) -->
+  <dialog id="resetDlg">
+    <h3>새 비밀번호 정하기</h3>
+    <p>앞으로 로그인할 때 쓸 새 비밀번호를 정해 주세요.</p>
+    <form id="resetForm">
+      <label class="field">새 비밀번호 (6~12자, 영문·숫자·특수문자)<input type="password" id="resetPw" autocomplete="new-password" maxlength="12" required></label>
+      <label class="field">새 비밀번호 확인<input type="password" id="resetPw2" autocomplete="new-password" maxlength="12" required></label>
+      <div class="msg" id="resetMsg"></div>
+      <button type="submit" class="primary wide">비밀번호 바꾸기</button>
+    </form>
+  </dialog>
+
+  <!-- 시작 가이드 -->
+  <dialog id="guideDlg" class="guide-dlg" aria-labelledby="guideTitle">
+    <button type="button" class="icon x" id="guideClose" aria-label="닫기">✕</button>
+    <h3 id="guideTitle">👋 해주계 시작 가이드</h3>
+    <p>아래 할 일을 하나씩 해보세요. 끝낸 일은 자동으로 체크돼요.</p>
+    <div class="guide-prog"><div class="bar"><span id="guideBar"></span></div><span id="guideProgTxt">0/7</span></div>
+    <div class="guide-done" id="guideDone" hidden>🎉 모두 끝냈어요! 이제 마을에서 다른 주민들과 수익률을 겨뤄 보세요.</div>
+
+    <div class="guide-step">
+      <h4>1️⃣ 첫 번째 할 일 <span class="ok" id="guideStep1Ok"></span></h4>
+      <ul>
+        <li data-g="login"><span class="ck">✓</span><span class="txt">오른쪽 위 버튼 눌러서 로그인하기</span><button type="button" data-go="login">하러 가기</button></li>
+        <li data-g="nick"><span class="ck">✓</span><span class="txt">닉네임 만들기</span><button type="button" data-go="me">하러 가기</button></li>
+        <li data-g="animal"><span class="ck">✓</span><span class="txt">내 동물 골라주기</span><button type="button" data-go="me">하러 가기</button></li>
+        <li data-g="village"><span class="ck">✓</span><span class="txt">'마을에 참여하기' 체크</span><button type="button" data-go="me">하러 가기</button></li>
+        <li data-g="car"><span class="ck">✓</span><span class="txt">'내 차 보여주기' 체크</span><button type="button" data-go="me">하러 가기</button></li>
+      </ul>
+    </div>
+    <div class="guide-step">
+      <h4>2️⃣ 두 번째 할 일 <span class="ok" id="guideStep2Ok"></span></h4>
+      <ul>
+        <li data-g="buy"><span class="ck">✓</span><span class="txt">내가 매수한 해외주식 1개 넣어보기</span><button type="button" data-go="buy">하러 가기</button></li>
+        <li data-g="chart"><span class="ck">✓</span><span class="txt">그래프에 내 주식이 반영됐는지 보기</span><button type="button" data-go="chart">보러 가기</button></li>
+      </ul>
+    </div>
+
+    <div class="guide-foot">
+      <label class="check"><input type="checkbox" id="guideOff"> 다음부터 자동으로 띄우지 않기</label>
+      <button type="button" class="primary" id="guideOk">확인</button>
+    </div>
   </dialog>
 
   <!-- 마이페이지 -->
@@ -423,7 +544,8 @@
 
   <!-- 해주계 마을 -->
   <section class="card" id="villageCard">
-    <div class="card-title">🏡 해주계 마을 <span class="sp"></span><small id="villageCount" style="font-size:13px;color:var(--muted);font-weight:500"></small></div>
+    <div class="card-title">🏡 해주계 마을 <span class="sp"></span><small id="villageCount" style="font-size:13px;color:var(--muted);font-weight:500"></small>
+      <button type="button" id="v3dToggle" class="guide-btn" hidden>3D 끄기</button></div>
     <div class="village-scene" id="villageScene">
       <div class="v-layer v-clouds" aria-hidden="true"><span>☁️</span><span>☁️</span><span>☁️</span></div>
       <div class="v-layer v-sun" aria-hidden="true">🌞</div>
@@ -436,6 +558,7 @@
     <div class="ride-legend">
       <div class="ride-legend-title">🚦 탈 것 안내 <small>수익금(평가손익 + 실현손익)에 따라 바뀌어요</small></div>
       <ul id="rideLegend"></ul>
+      <p class="ride-note" id="rideLegendNote"></p>
     </div>
     <p class="hint" id="villageHint">마이페이지에서 동물을 고르고 '마을에 참여하기'를 켜면 내 동물이 마을에 나타나요. 머리 위에는 수익률만 보이고 금액은 보이지 않아요.</p>
   </section>
@@ -464,7 +587,16 @@
 
   <!-- 보유 종목 -->
   <section class="card">
-    <div class="card-title">보유 종목</div>
+    <div class="card-title">보유 종목 <span class="sp"></span>
+      <select id="holdSort" aria-label="보유 종목 정렬">
+        <option value="pct-desc">수익률 높은 순</option>
+        <option value="pct-asc">수익률 낮은 순</option>
+        <option value="pl-desc">평가손익 큰 순</option>
+        <option value="pl-asc">평가손익 작은 순</option>
+        <option value="val-desc">평가금액 큰 순</option>
+        <option value="name">이름 순</option>
+      </select>
+    </div>
     <div id="holdList"></div>
   </section>
 
@@ -517,17 +649,56 @@ const HAEJUGYE_CONFIG = {
 // 가격은 국내 공식 출고가·시작가 기준 (2026년 11월 조사). 바뀌면 숫자만 고치면 돼요.
 // file: 위키미디어 공용(Wikimedia Commons)의 자유 라이선스 사진 파일 이름 → 페이지가 열릴 때 실시간으로 불러옴
 const GOODS_DATE = '2026년 11월';
-// 마을에서 탈 것 (HAEJUGYE_GOODS와 같은 순서). 치킨·아이폰 단계는 차 대신 귀여운 탈 것
-const VILLAGE_RIDES = [
-  { ride: '🛵', label: '치킨 배달 오토바이' },
-  { ride: '🛴', label: '킥보드' },
-  { ride: '🚙', label: '캐스퍼' },
-  { ride: '🚙', label: '스포티지' },
-  { ride: '🚗', label: '모델 Y' },
-  { ride: '🚘', label: 'GV80' },
-  { ride: '🏎️', label: '911' },
-  { ride: '🚘', label: '마이바흐', crown: true }
+// ===== 마을 탈 것 등급 (수익금 = 평가손익 + 실현손익) =====
+// 차가 있는 등급은 3종 중 하나가 주민마다 정해져서 보임. 가격은 2026년 11월 국내 출고가 조사(최상위 트림·풀옵션 기준, ≈는 대략)
+// 숫자만 고치면 마을과 '탈 것 안내'가 같이 바뀜
+const RIDE_DATE = '2026년 11월';
+const VILLAGE_TIERS = [
+  { id: 'meal', ride: '🍚', name: '하루에 한끼 먹기', cond: '전체 투자금 손실률 50% 이상' },
+  { id: 'walk', ride: null, name: '걸어 다니기', cond: '수익 0원 미만' },
+  { id: 'bus',  ride: '🚌', name: '대중교통', min: 0, max: 1e6 },
+  { id: 'kick', ride: '🛴', name: '전동 킥보드', min: 1e6, max: 5e6 },
+  { id: 'taxi', ride: '🚕', name: '택시 가능', min: 5e6, max: 1e7 },
+  { id: 'kr1', name: '국산차 (풀옵션)', min: 1e7, max: 3e7, cars: [
+    { n: '기아 레이 X-Line', p: 20030000, e: '🚙' },
+    { n: '현대 캐스퍼 인스퍼레이션', p: 20170000, e: '🚙' },
+    { n: '캐스퍼 일렉트릭 프리미엄', p: 27870000, e: '🚙' } ] },
+  { id: 'kr2', name: '국산차 (풀옵션)', min: 3e7, max: 5e7, cars: [
+    { n: '쏘나타 디 엣지 최상위', p: 39260000, e: '🚗' },
+    { n: '아반떼 풀옵션', p: 40000000, e: '🚗', approx: true },
+    { n: '투싼 1.6T 풀옵션', p: 43930000, e: '🚙' } ] },
+  { id: 'im1', name: '외제차', min: 5e7, max: 7e7, cars: [
+    { n: 'BMW 320i M 스포츠', p: 63000000, e: '🚗' },
+    { n: '아우디 A6 40 TFSI', p: 65190000, e: '🚗' },
+    { n: '벤츠 C 200 AMG 라인', p: 68300000, e: '🚗' } ] },
+  { id: 'im2', name: '외제차', min: 7e7, max: 1e8, cars: [
+    { n: '벤츠 E클래스', p: 79000000, e: '🚘', from: true },
+    { n: '아우디 A6 45 콰트로 S-라인', p: 85410000, e: '🚘' },
+    { n: 'BMW 530i xDrive M 스포츠', p: 91200000, e: '🚘' } ] },
+  { id: 'im3', name: '외제차', min: 1e8, max: 1.5e8, cars: [
+    { n: 'BMW X5 40i M 스포츠', p: 131900000, e: '🚙' },
+    { n: '포르쉐 카이엔 일렉트릭', p: 142300000, e: '🚙' },
+    { n: '벤츠 GLE 450 쿠페', p: 142500000, e: '🚙' } ] },
+  { id: 'im4', name: '외제차', min: 1.5e8, max: 2e8, cars: [
+    { n: '포르쉐 카이엔 E-하이브리드 쿠페', p: 157900000, e: '🚙' },
+    { n: 'BMW X5 최상위', p: 160400000, e: '🚙' },
+    { n: '포르쉐 카이엔 S 일렉트릭', p: 163800000, e: '🚙' } ] },
+  { id: 'im5', name: '외제차', min: 2e8, max: 3e8, cars: [
+    { n: '포르쉐 911 카레라 GTS', p: 247300000, e: '🏎️' },
+    { n: '벤츠 S 580 4MATIC Long', p: 258600000, e: '🚘' },
+    { n: '벤츠 AMG G 63', p: 261200000, e: '🚙' } ] },
+  { id: 'im6', name: '외제차', min: 3e8, max: Infinity, crown: true, cars: [
+    { n: '마이바흐 S 580', p: 317000000, e: '🚘' },
+    { n: '페라리 296 GTB', p: 395000000, e: '🏎️', approx: true },
+    { n: '람보르기니 우루스 SE', p: 429000000, e: '🚙', approx: true } ] }
 ];
+// 수익금(p)과 수익률(pct)로 등급 번호 고르기
+function villageTierIndex(p, pct) {
+  if (pct != null && pct <= -50) return 0;          // 전체 투자금의 절반 이상 손실
+  if (p < 0) return 1;
+  const i = VILLAGE_TIERS.findIndex(t => t.min != null && p >= t.min && p < t.max);
+  return i < 0 ? 1 : i;
+}
 // 고를 수 있는 동물
 const VILLAGE_ANIMALS = [
   ['dog', '🐶', '강아지'], ['cat', '🐱', '고양이'], ['rabbit', '🐰', '토끼'], ['fox', '🦊', '여우'],
@@ -747,9 +918,8 @@ const HAEJUGYE_GOODS = [
     }
     const p = unrealized + realizedAll;
     // 마을용: 수익률(%)과 탈 수 있는 차량 단계만 (금액은 보내지 않음)
-    let tier = -1;
-    if (p > 0) HAEJUGYE_GOODS.forEach((g, i) => { if (g.price <= p) tier = i; });
-    myStanding = { pct: invested > 0 ? p / invested * 100 : null, tier };
+    const myPct = invested > 0 ? p / invested * 100 : null;
+    myStanding = { pct: myPct, tier: villageTierIndex(p, myPct) };
     scheduleVillageSync();
     const chicken = HAEJUGYE_GOODS[0];
     $('#funProfit').textContent = fKrwS(p);
@@ -834,26 +1004,56 @@ const HAEJUGYE_GOODS = [
     const soldCost = realized.filter(x => !x.short).reduce((a, x) => a + x.cost, 0);
     const hasTrades = state.buys.some(r => r.ticker && num(r.qty) > 0);
     renderFun(hasTrades, priced, (live.length ? total - cost : 0), realizedAll, cost + soldCost);
+    updateGuide();
 
     // 보유 종목 리스트
     const box = $('#holdList');
     if (!live.length) { box.innerHTML = `<div class="empty">아래 매매 기록에 매수를 입력하면 종목별로 정리돼요.</div>`; return; }
-    box.innerHTML = live.map(h => {
+    // 종목마다 평가금액·손익·수익률 계산 → 고른 순서로 정렬
+    const items = live.map(h => {
       const p = prices[h.t];
+      if (!(p && fx)) return { h, v: null, d: null, pct: null };
+      const v = h.qty * p.cur * fx.rate, d = v - h.cost;
+      return { h, v, d, pct: h.cost ? d / h.cost * 100 : 0 };
+    });
+    const sortBy = $('#holdSort').value;
+    const nul = (x, dir) => x == null ? (dir > 0 ? Infinity : -Infinity) : x;   // 시세 없는 종목은 맨 뒤로
+    const cmp = {
+      'pct-desc': (a, b) => nul(b.pct, -1) - nul(a.pct, -1), 'pct-asc': (a, b) => nul(a.pct, 1) - nul(b.pct, 1),
+      'pl-desc': (a, b) => nul(b.d, -1) - nul(a.d, -1), 'pl-asc': (a, b) => nul(a.d, 1) - nul(b.d, 1),
+      'val-desc': (a, b) => nul(b.v, -1) - nul(a.v, -1), 'name': (a, b) => a.h.t.localeCompare(b.h.t)
+    }[sortBy] || (() => 0);
+    items.sort(cmp);
+    box.innerHTML = items.map(({ h, v, d, pct }) => {
       let val = '–', pl = '시세 불러오는 중', cls = '';
-      if (p && fx) {
-        const v = h.qty * p.cur * fx.rate, d = v - h.cost;
-        val = fKrw(v); pl = `${fKrwS(d)} (${fPct(h.cost ? d / h.cost * 100 : 0)})`; cls = sc(d);
-      }
-      return `<div class="hold" data-t="${esc(h.t)}" role="button" tabindex="0">
+      if (v != null) { val = fKrw(v); pl = `${fKrwS(d)} (${fPct(pct)})`; cls = sc(d); }
+      const tier = lossTier(pct);
+      return `<div class="hold${tier ? ' tier-' + tier.n : ''}" data-t="${esc(h.t)}" role="button" tabindex="0">
         <div class="badge" style="background:${badgeColor(h.t)}">${esc(h.t.slice(0, 4))}</div>
         <div class="nm"><b>${esc(h.t)}</b><small>${esc(names[h.t] || '')}${names[h.t] ? ' · ' : ''}${fQty(h.qty)}주 · 평균 ${fUsd(h.avgPx)}</small>
+          ${tier ? `<span class="tier-chip">${tier.emoji} ${tier.msg}</span>` : ''}
           ${warn.has(h.t) ? '<span class="warn">매도 수량이 보유 수량보다 많아요</span>' : ''}</div>
         <div class="vl num"><b>${val}</b><small class="${cls}">${pl}</small></div>
         <button type="button" class="sell-btn" data-sell="${esc(h.t)}" aria-label="${esc(h.t)} 매도하기">매도</button>
       </div>`;
-    }).join('') + [...warn].filter(t => !live.some(h => h.t === t)).map(t => `<p class="warn">${esc(t)}: 매도 수량이 보유 수량보다 많아요. 날짜와 수량을 확인해주세요.</p>`).join('');
+    }).join('') + [...warn].filter(t => !live.some(h => h.t === t)).map(t => `<p class="warn">${esc(t)}: 매도 수량이 보유 수량보다 많아요. 날짜와 수량을 확인해주세요.</p>`).join('')
+      + tierLegendHtml();
   }
+  // 손실 구간: 수익률이 이 값 이하로 떨어지면 해당 문구
+  const LOSS_TIERS = [
+    { n: 5, max: -90, emoji: '⚰️', msg: '놔두세요. 상폐될 거니까' },
+    { n: 4, max: -80, emoji: '🤔', msg: '흠…. (조언 불가)' },
+    { n: 3, max: -70, emoji: '💧', msg: '손절 or 왕창 물타기' },
+    { n: 2, max: -50, emoji: '✂️', msg: '손절 or 물타기' },
+    { n: 1, max: -30, emoji: '⏳', msg: '이 정도는 복구 가능해요. 기다려요' }
+  ];
+  function lossTier(pct) { return pct == null ? null : (LOSS_TIERS.find(t => pct <= t.max) || null); }
+  function tierLegendHtml() {
+    const tc = { 1: '#3182f6', 2: '#f59f00', 3: '#f76707', 4: '#7950f2', 5: '#868e96' };
+    return `<div class="tier-legend">${LOSS_TIERS.slice().reverse().map(t => `<span style="--tc:${tc[t.n]}">${t.max}% 이하 ${t.emoji} ${t.msg}</span>`).join('')}</div>`;
+  }
+  $('#holdSort').addEventListener('change', () => { try { localStorage.setItem('haejugye-hold-sort', $('#holdSort').value); } catch (e) {} drawPortfolio(); });
+  try { const s = localStorage.getItem('haejugye-hold-sort'); if (s && [...$('#holdSort').options].some(o => o.value === s)) $('#holdSort').value = s; } catch (e) {}
   $('#holdList').addEventListener('click', (e) => {
     const sellBtn = e.target.closest('[data-sell]');
     if (sellBtn) { startSell(sellBtn.dataset.sell); return; }
@@ -1198,6 +1398,7 @@ const HAEJUGYE_GOODS = [
       },
       plugins: [valueLabels]
     });
+    guideChartCheck();
   }
 
   // ---------- 로그인 · 클라우드 저장 ----------
@@ -1223,6 +1424,7 @@ const HAEJUGYE_GOODS = [
     }
   }
   function updateMe() {
+    updateGuide();
     if (!user) return;
     $('#meName').textContent = displayName();
     paintAvatar($('#meAv'));
@@ -1323,11 +1525,12 @@ const HAEJUGYE_GOODS = [
   // 장식 (x: 가로 %, t: 깊이 0=맨 뒤 ~ 1=맨 앞, size: 글자 크기)
   const VILLAGE_PROPS = [
     { e: '🏡', x: 92, t: 0.02, size: 44 }, { e: '🌳', x: 6, t: 0.08, size: 46 }, { e: '🌲', x: 96, t: 0.3, size: 44 },
-    { e: '🌳', x: 2, t: 0.55, size: 50 }, { e: '🌷', x: 9, t: 0.95, size: 22 }, { e: '🌼', x: 93, t: 1, size: 22 }, { e: '🪨', x: 20, t: 0.0, size: 20 }
+    { e: '🌳', x: 2, t: 0.55, size: 50 }, { e: '🌷', x: 9, t: 0.95, size: 22 }, { e: '🌼', x: 93, t: 1, size: 22 }, { e: '🍄', x: 20, t: 0.0, size: 20 }
   ];
   const hash01 = (s) => { let h = 7; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return (h % 1000) / 1000; };
 
-  function renderVillage() {
+  function renderVillage() { renderVillage2D(); sync3D(); }
+  function renderVillage2D() {
     const box = $('#residents'), cnt = $('#villageCount'), scene = $('#villageScene');
     const W = scene.clientWidth || 600;
     const rowsData = (sb && user && !villageMissing) ? villageRows : [];
@@ -1377,7 +1580,7 @@ const HAEJUGYE_GOODS = [
       const x = 50 + (((col + 0.5) / inRow) * 100 - 50 + stagger + jitter) * spread * 0.86;
 
       const pct = r.return_pct == null ? null : Number(r.return_pct);
-      const ride = r.car_tier >= 0 ? VILLAGE_RIDES[r.car_tier] : null;
+      const ride = rideOf(r);
       const el = document.createElement('div');
       el.className = 'res' + (ride ? ' riding' : '') + (r.user_id === user.id ? ' me' : '');
       const mk = (cls, text, parent = el) => { const s = document.createElement(cls === 'ride' ? 'div' : 'span'); s.className = cls; if (text != null) s.textContent = text; parent.appendChild(s); return s; };
@@ -1389,7 +1592,7 @@ const HAEJUGYE_GOODS = [
       mk('ani', animalOf(r.animal), rd);
       if (ride) { mk('veh', ride.ride, rd); if (ride.crown) mk('crown', '👑', rd); }
       mk('tag', r.nickname);
-      mk('car-name', ride ? ride.label : '🚶 걸어 다니는 중');
+      mk('car-name', ride ? ride.label : walkLabel(r));
       el.title = `${r.nickname} · 수익률 ${pct == null ? '–' : fPct(pct)}${ride ? ' · ' + ride.label : ''}`;
       place(el, x, t, 0, yRow[row]);
       box.appendChild(el);
@@ -1414,21 +1617,273 @@ const HAEJUGYE_GOODS = [
       const w = scene.clientWidth; if (Math.abs(w - lastW) < 20) return; lastW = w; renderVillage();
     }).observe(scene);
   })();
-  setInterval(() => { if (user) loadVillage(); }, 60_000);
-  // 탈 것 안내 (HAEJUGYE_GOODS 가격에서 자동으로 만들어서, 가격을 고치면 안내도 같이 바뀜)
-  function renderRideLegend() {
-    const man = (won) => {
-      const eok = Math.floor(won / 1e8), m = Math.round((won % 1e8) / 1e3) / 10;   // 만원 단위, 소수 첫째 자리까지
-      const mStr = m ? m.toLocaleString('ko-KR', { maximumFractionDigits: 1 }) + '만' : '';
-      return (eok ? eok + '억' + (mStr ? ' ' : '') : '') + mStr + '원';
-    };
-    const items = [['🚶', '걸어 다니는 중', '수익 0원 이하, 또는 차 숨김']];
-    VILLAGE_RIDES.forEach((r, i) => {
-      const g = HAEJUGYE_GOODS[i]; if (!g) return;
-      items.push([r.ride + (r.crown ? '👑' : ''), r.label, `수익 ${man(g.price)} 이상`]);
+  setInterval(() => { if (user) loadVillage(); }, 60_000);  // ---------- 진짜 3D 마을 (three.js) ----------
+  // 마을이 화면 가까이 오면 3D 도구를 불러와서 그림. 3D가 안 되는 기기에서는 위의 '입체 느낌' 마을이 그대로 보임
+  var V3 = null;
+  const loadScript = (src) => new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  const v3dWanted = () => { try { return localStorage.getItem('haejugye-3d') !== '0'; } catch (e) { return true; } };
+  const hasWebGL = () => { try { const c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl'))); } catch (e) { return false; } };
+  const isDark = () => { const t = document.documentElement.dataset.theme; return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; };
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarsePointer = matchMedia('(pointer: coarse)').matches;
+
+  var v3Starting = false;
+  async function init3D() {
+    if (V3 || v3Starting || !hasWebGL()) return;
+    v3Starting = true;   // 동시에 두 번 불려도 한 번만 만들기
+    try {
+      if (!window.THREE) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js');
+      if (!THREE.OrbitControls) await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js');
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    } catch (e) { return; }   // 불러오기 실패 → 입체 느낌 마을 유지
+    const T = THREE, host = $('#villageScene'), dark = isDark();
+    const scene = new T.Scene();
+    const skyC = dark ? 0x1a2446 : 0xbfe6ff;
+    scene.background = new T.Color(skyC);
+    scene.fog = new T.Fog(skyC, 30, 75);
+    const camera = new T.PerspectiveCamera(42, 1, 0.1, 200);
+    camera.position.set(0, 8, 16);
+    const renderer = new T.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = T.PCFSoftShadowMap;
+    renderer.domElement.className = 'v3d-canvas';
+    renderer.domElement.setAttribute('aria-label', '해주계 마을 3D 화면');
+    host.insertBefore(renderer.domElement, host.firstChild);
+
+    // 빛
+    scene.add(new T.HemisphereLight(dark ? 0x8899cc : 0xffffff, dark ? 0x223322 : 0x7aa35a, dark ? 0.55 : 0.85));
+    const sunLight = new T.DirectionalLight(dark ? 0xaabbff : 0xffffff, dark ? 0.5 : 0.85);
+    sunLight.position.set(8, 16, 10); sunLight.castShadow = true; sunLight.shadow.mapSize.set(1024, 1024);
+    Object.assign(sunLight.shadow.camera, { left: -22, right: 22, top: 22, bottom: -22, near: 1, far: 60 });
+    scene.add(sunLight);
+    const mat = (c) => new T.MeshLambertMaterial({ color: c });
+
+    // 땅·길·언덕
+    const ground = new T.Mesh(new T.CircleGeometry(42, 64), mat(dark ? 0x2f5a35 : 0x8fcf72));
+    ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+    const road = new T.Mesh(new T.PlaneGeometry(3.2, 70), mat(dark ? 0x6b5d3d : 0xe9d9a8));
+    road.rotation.x = -Math.PI / 2; road.position.y = 0.01; road.receiveShadow = true; scene.add(road);
+    [[-24, -32, 14], [6, -38, 18], [30, -27, 12], [-35, -8, 10], [35, 4, 9]].forEach(([x, z, r], i) => {
+      const hill = new T.Mesh(new T.SphereGeometry(r, 24, 12), mat(dark ? 0x264530 : (i % 2 ? 0x88c670 : 0x7fbf68)));
+      hill.scale.y = 0.45; hill.position.set(x, -1, z); scene.add(hill);
     });
-    $('#rideLegend').innerHTML = items.map(([ic, name, cond]) =>
-      `<li><span class="ic">${ic}</span><span><b>${esc(name)}</b> · ${esc(cond)}</span></li>`).join('');
+    // 나무·집·꽃
+    const tree = (x, z, s = 1, pine = 0) => {
+      const g = new T.Group();
+      const trunk = new T.Mesh(new T.CylinderGeometry(0.15 * s, 0.2 * s, 1 * s, 8), mat(0x8b5a2b)); trunk.position.y = 0.5 * s;
+      const top = pine ? new T.Mesh(new T.ConeGeometry(0.9 * s, 2 * s, 8), mat(dark ? 0x1f5130 : 0x2f8f46))
+                       : new T.Mesh(new T.IcosahedronGeometry(0.95 * s, 0), mat(dark ? 0x2a5c2e : 0x4caf50));
+      top.position.y = pine ? 1.9 * s : 1.5 * s;
+      [trunk, top].forEach(m => { m.castShadow = true; g.add(m); });
+      g.position.set(x, 0, z); scene.add(g);
+    };
+    const house = (x, z, rot, c) => {
+      const g = new T.Group();
+      const body = new T.Mesh(new T.BoxGeometry(2.2, 1.6, 2), mat(c)); body.position.y = 0.8;
+      const roof = new T.Mesh(new T.ConeGeometry(1.75, 1.2, 4), mat(0xd9534f)); roof.position.y = 2.2; roof.rotation.y = Math.PI / 4;
+      const door = new T.Mesh(new T.BoxGeometry(0.5, 0.8, 0.05), mat(0x8b5a2b)); door.position.set(0, 0.4, 1.01);
+      [body, roof, door].forEach(m => { m.castShadow = true; g.add(m); });
+      g.position.set(x, 0, z); g.rotation.y = rot; scene.add(g);
+    };
+    house(-9, -10, 0.4, 0xfff3d6); house(10, -12, -0.5, 0xe3f2fd); house(-13, 3, 1.2, 0xfce4ec);
+    [[-6, -16, 1.2, 1], [7, -17, 1.4, 0], [-15, -6, 1.1, 0], [15, -3, 1.3, 1], [-11, 10, 1, 1], [12, 9, 1.2, 0],
+     [-4, -22, 1.5, 1], [17, -15, 1.2, 1], [-18, -14, 1.3, 0]].forEach(a => tree(...a));
+    const flowerC = [0xff6b9a, 0xffd43b, 0xffffff, 0xb197fc];
+    for (let i = 0; i < 46; i++) {
+      const a = i * 2.399, r = 7 + (i % 9) * 1.7;
+      const f = new T.Mesh(new T.SphereGeometry(0.12, 6, 4), new T.MeshBasicMaterial({ color: flowerC[i % 4] }));
+      f.position.set(Math.cos(a) * r, 0.12, Math.sin(a) * r);
+      if (Math.abs(f.position.x) > 2) scene.add(f);
+    }
+    // 구름·해(밤에는 달)
+    const clouds = new T.Group();
+    const cloudMat = new T.MeshLambertMaterial({ color: 0xffffff, transparent: true, opacity: dark ? 0.35 : 0.95 });
+    [[-14, 11, -20], [4, 13, -26], [18, 10, -16], [-24, 12, -6]].forEach(([x, y, z]) => {
+      const c = new T.Group();
+      [[0, 0, 1.6], [1.6, -0.2, 1.2], [-1.6, -0.2, 1.2], [0.6, 0.6, 1.1]].forEach(([dx, dy, r]) => {
+        const s = new T.Mesh(new T.SphereGeometry(r, 12, 8), cloudMat); s.position.set(dx, dy, 0); c.add(s);
+      });
+      c.position.set(x, y, z); clouds.add(c);
+    });
+    scene.add(clouds);
+    const orb = new T.Mesh(new T.SphereGeometry(2, 20, 12), new T.MeshBasicMaterial({ color: dark ? 0xf1f3f5 : 0xffd43b }));
+    orb.position.set(22, 18, -40); scene.add(orb);
+    const group = new T.Group(); scene.add(group);
+
+    // 마우스로 돌리기·확대 (가만히 두면 천천히 자동 회전)
+    const controls = new T.OrbitControls(camera, renderer.domElement);
+    Object.assign(controls, { enableDamping: true, dampingFactor: 0.08, enablePan: false, minDistance: 7, maxDistance: 32,
+      minPolarAngle: 0.35, maxPolarAngle: 1.38, autoRotate: !reduceMotion, autoRotateSpeed: 0.5 });
+    let idleTimer;
+    controls.addEventListener('start', () => { controls.autoRotate = false; clearTimeout(idleTimer); });
+    controls.addEventListener('end', () => { clearTimeout(idleTimer); if (!reduceMotion) idleTimer = setTimeout(() => { controls.autoRotate = true; }, 8000); });
+    // 안내 문구 · 휴대폰은 [돌려보기]를 눌러야 손가락으로 돌림 (그냥 두면 페이지 스크롤이 막히니까)
+    if (!coarsePointer) {          // 휴대폰은 [돌려보기] 버튼만으로 충분해서 안내 문구 생략
+      const hint = document.createElement('div');
+      hint.className = 'v3d-ui v3d-hint';
+      hint.textContent = '🖱 끌어서 돌리고, 휠로 확대해요';
+      host.appendChild(hint);
+    }
+    if (coarsePointer) {
+      controls.enabled = false; renderer.domElement.style.touchAction = 'pan-y';
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'v3d-ui v3d-rotate'; btn.textContent = '🖐 돌려보기';
+      btn.addEventListener('click', () => {
+        controls.enabled = !controls.enabled;
+        btn.classList.toggle('on', controls.enabled);
+        btn.textContent = controls.enabled ? '✋ 돌리기 끄기' : '🖐 돌려보기';
+        renderer.domElement.style.touchAction = controls.enabled ? 'none' : 'pan-y';
+      });
+      host.appendChild(btn);
+    }
+
+    V3 = { T, scene, camera, renderer, controls, group, host, visible: true, residents: [], key: '', rowCount: -1 };
+    new IntersectionObserver((es) => { V3.visible = es.some(e => e.isIntersecting); }, { rootMargin: '100px' }).observe(host);
+    const clock = new T.Clock();
+    const loop = () => {
+      requestAnimationFrame(loop);
+      if (!V3.visible || !host.classList.contains('is-3d')) return;   // 안 보일 때는 쉬어서 배터리 아낌
+      const t = clock.getElapsedTime();
+      controls.update();
+      if (!reduceMotion) {
+        clouds.position.x = Math.sin(t * 0.05) * 6;
+        V3.residents.forEach((s, i) => { s.position.y = Math.abs(Math.sin(t * 2 + i)) * 0.12; });
+      }
+      renderer.render(scene, camera);
+    };
+    $('#v3dToggle').hidden = false;
+    apply3D(v3dWanted());
+    loop();
+  }
+  function apply3D(on) {
+    $('#villageScene').classList.toggle('is-3d', !!(on && V3));
+    $('#v3dToggle').textContent = on ? '3D 끄기' : '3D 켜기';
+    renderVillage();
+  }
+  $('#v3dToggle').addEventListener('click', () => {
+    const on = !$('#villageScene').classList.contains('is-3d');
+    try { localStorage.setItem('haejugye-3d', on ? '1' : '0'); } catch (e) {}
+    apply3D(on);
+  });
+  if (window.IntersectionObserver) new IntersectionObserver((es, ob) => {
+    if (es.some(e => e.isIntersecting)) { ob.disconnect(); init3D(); }
+  }, { rootMargin: '400px' }).observe($('#villageCard'));
+  setTimeout(init3D, 4000);   // 화면 감지가 안 되는 환경을 위한 예비: 4초 뒤엔 어쨌든 불러옴
+
+  // 주민 한 명 = 카메라를 항상 바라보는 그림판 (말풍선 수익률 + 동물·탈 것 + 닉네임)
+  function makeResidentSprite(r, me) {
+    const T = V3.T, W = 320, H = 400;
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    const EMO = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+    const pct = r.return_pct == null ? null : Number(r.return_pct);
+    const ride = rideOf(r);
+    const round = (x, y, w, h, rad) => { g.beginPath(); g.moveTo(x + rad, y); g.arcTo(x + w, y, x + w, y + h, rad); g.arcTo(x + w, y + h, x, y + h, rad); g.arcTo(x, y + h, x, y, rad); g.arcTo(x, y, x + w, y, rad); g.closePath(); };
+    g.textAlign = 'center';
+    // 말풍선 (수익률만)
+    const txt = pct == null ? '수익률 –' : fPct(pct);
+    g.font = '800 40px "Noto Sans KR", sans-serif';
+    const tw = g.measureText(txt).width + 36;
+    g.fillStyle = '#fff'; g.shadowColor = 'rgba(0,0,0,.25)'; g.shadowBlur = 8;
+    round((W - tw) / 2, 6, tw, 60, 30); g.fill(); g.shadowBlur = 0;
+    g.beginPath(); g.moveTo(W / 2 - 10, 64); g.lineTo(W / 2 + 10, 64); g.lineTo(W / 2, 78); g.fill();
+    g.fillStyle = pct == null || pct === 0 ? '#555' : pct > 0 ? '#f04452' : '#3182f6';
+    g.textBaseline = 'middle'; g.fillText(txt, W / 2, 37);
+    // 동물 + 탈 것
+    g.textBaseline = 'alphabetic';
+    if (ride) {
+      g.font = `86px ${EMO}`; g.fillText(animalOf(r.animal), W / 2, 205);
+      g.save(); g.translate(W / 2, 0); g.scale(-1, 1); g.font = `120px ${EMO}`; g.fillText(ride.ride, 0, 300); g.restore();
+      if (ride.crown) { g.font = `44px ${EMO}`; g.fillText('👑', W / 2, 122); }
+    } else {
+      g.font = `130px ${EMO}`; g.fillText(animalOf(r.animal), W / 2, 292);
+    }
+    // 닉네임 이름표 (내 이름표는 파란색)
+    g.font = '800 34px "Noto Sans KR", sans-serif';
+    const nw = Math.min(W - 10, g.measureText(r.nickname).width + 30);
+    g.fillStyle = me ? '#3182f6' : 'rgba(255,255,255,.95)';
+    round((W - nw) / 2, 312, nw, 48, 14); g.fill();
+    g.fillStyle = me ? '#fff' : '#191f28'; g.textBaseline = 'middle';
+    g.fillText(r.nickname, W / 2, 337, W - 30);
+    g.font = '500 24px "Noto Sans KR", sans-serif'; g.fillStyle = isDark() ? '#e9ecef' : '#1f3a12';
+    g.fillText(ride ? ride.label : walkLabel(r), W / 2, 382, W - 10);
+    const tex = new T.CanvasTexture(c); tex.anisotropy = 4;
+    const sp = new T.Sprite(new T.SpriteMaterial({ map: tex, transparent: true }));
+    sp.center.set(0.5, 0); sp.scale.set(2.8, 3.5);
+    return sp;
+  }
+
+  // 주민 목록이 바뀌면 3D 마을 다시 배치 (수익률 높은 주민이 앞줄)
+  function sync3D() {
+    if (!V3) return;
+    const host = V3.host;
+    if (host.classList.contains('is-3d')) host.style.height = (host.clientWidth < 520 ? 380 : 460) + 'px';
+    const w = host.clientWidth, h = host.clientHeight;
+    if (!w || !h) return;
+    V3.renderer.setSize(w, h, false);
+    V3.camera.aspect = w / h; V3.camera.updateProjectionMatrix();
+    const rows = (sb && user && !villageMissing) ? villageRows : [];
+    const key = JSON.stringify(rows.map(r => [r.user_id, r.nickname, r.animal, r.return_pct, r.car_tier])) + '|' + (user ? user.id : '') + '|' + isDark();
+    if (key === V3.key) return;
+    V3.key = key;
+    V3.group.children.forEach(o => { if (o.geometry) o.geometry.dispose(); if (o.material) { if (o.material.map) o.material.map.dispose(); o.material.dispose(); } });
+    V3.group.clear(); V3.residents = [];
+    const n = rows.length;
+    const narrow = V3.camera.aspect < 1.1;     // 휴대폰처럼 좁은 화면은 한 줄에 3명까지만 (너무 작아지지 않게)
+    const perRow = narrow ? 3 : Math.max(3, Math.min(6, Math.ceil(Math.sqrt(n * 1.6))));
+    const rowCount = Math.max(1, Math.ceil(n / perRow));
+    rows.forEach((r, i) => {
+      const row = Math.floor(i / perRow), col = i % perRow, inRow = Math.min(perRow, n - row * perRow);
+      const x = (col - (inRow - 1) / 2) * 3.3 + (row % 2 ? 0.8 : 0) + (hash01(r.user_id) - 0.5) * 0.6;
+      const z = 3 - row * 4;
+      const sp = makeResidentSprite(r, r.user_id === user.id);
+      sp.position.set(x, 0, z);
+      const shadow = new V3.T.Mesh(new V3.T.CircleGeometry(0.7, 20), new V3.T.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.13, depthWrite: false }));
+      shadow.rotation.x = -Math.PI / 2; shadow.position.set(x, 0.02, z);
+      V3.group.add(shadow); V3.group.add(sp); V3.residents.push(sp);
+    });
+    // 줄 수나 화면 비율이 바뀔 때만 카메라를 다시 맞춤 (보던 각도는 최대한 유지)
+    const fitKey = rowCount + '|' + perRow + '|' + Math.round(V3.camera.aspect * 10);
+    if (fitKey !== V3.rowCount) {
+      V3.rowCount = fitKey;
+      const midZ = 3 - (rowCount - 1) * 2;
+      // 맨 앞줄이 화면 폭에 다 들어오도록 거리 계산
+      const rowW = (Math.min(perRow, n || 1) - 1) * 3.3 + 3.6;
+      const hHalf = Math.atan(Math.tan((V3.camera.fov / 2) * Math.PI / 180) * V3.camera.aspect);
+      const dist = Math.max(10 + rowCount * 1.8, (rowW / 2) / Math.tan(hHalf) + 4);
+      V3.controls.target.set(0, 1.4, midZ);
+      V3.camera.position.set(0, dist * 0.5, midZ + dist * 0.87);
+      V3.controls.maxDistance = Math.max(32, dist * 1.6);
+      V3.controls.update();
+    }
+  }
+
+  // 주민의 탈 것: 등급 번호(car_tier) → 그림·이름. 차 등급은 3종 중 하나를 주민마다 고정으로 골라 줌
+  function rideOf(r) {
+    const t = VILLAGE_TIERS[r.car_tier];
+    if (!t || t.id === 'walk') return null;
+    if (t.cars) {
+      const car = t.cars[Math.floor(hash01(r.user_id) * t.cars.length) % t.cars.length];
+      return { ride: car.e, label: car.n, crown: !!t.crown };
+    }
+    return { ride: t.ride, label: t.name };
+  }
+  const walkLabel = (r) => r.car_tier === 1 ? '🚶 걸어 다니기' : '🚶 걸어 다니는 중';
+
+  // 탈 것 안내 (VILLAGE_TIERS에서 자동으로 만들어서, 숫자를 고치면 안내도 같이 바뀜)
+  const man = (won) => {
+    const eok = Math.floor(won / 1e8), m = Math.round((won % 1e8) / 1e3) / 10;   // 만원 단위, 소수 첫째 자리까지
+    const mStr = m ? m.toLocaleString('ko-KR', { maximumFractionDigits: 1 }) + '만' : '';
+    return (eok ? eok + '억' + (mStr ? ' ' : '') : '') + mStr + '원';
+  };
+  function renderRideLegend() {
+    $('#rideLegend').innerHTML = VILLAGE_TIERS.map(t => {
+      const ic = t.crown ? '👑' : t.cars ? t.cars[t.cars.length - 1].e : (t.ride || '🚶');   // 등급마다 대표 아이콘 하나
+      const cond = t.cond || (t.max === Infinity ? `수익 ${man(t.min)} 이상` : t.min === 0 ? `수익 ${man(t.max)} 미만` : `수익 ${man(t.min)} ~ ${man(t.max)} 미만`);
+      const cars = t.cars ? `<small class="cars">${t.cars.map(c => `${esc(c.n)} ${c.approx ? '≈' : ''}${man(c.p)}${c.from ? '~' : ''}`).join(' · ')}</small>` : '';
+      return `<li><span class="ic">${ic}</span><span><b>${esc(t.name)}</b> · ${esc(cond)}${cars}</span></li>`;
+    }).join('');
+    $('#rideLegendNote').textContent = `차 가격: ${RIDE_DATE} 국내 출고가 조사 (최상위 트림·풀옵션 기준, ≈는 대략, ~는 시작가). '내 차 보여주기'를 끄면 걸어 다니는 모습으로 보여요.`;
   }
   renderRideLegend();
   if (sb) {
@@ -1545,11 +2000,142 @@ const HAEJUGYE_GOODS = [
 
     $('#googleBtn').addEventListener('click', () => sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin } }));
     // 페이지를 열 때(INITIAL_SESSION)와 로그인/로그아웃 때 호출됨
-    sb.auth.onAuthStateChange((_event, session) => { setTimeout(() => handleSession(session), 0); });
+    // ----- 아이디·비밀번호 찾기 -----
+    const fd = $('#findDlg');
+    const showFind = (mode) => {
+      $('#findIdView').hidden = mode !== 'id'; $('#findPwView').hidden = mode !== 'pw';
+      $('#findMsg').textContent = '';
+      if (mode === 'pw') $('#findEmail').value = $('#authEmail').value.trim();
+      if (dlg.open) dlg.close();
+      if (!fd.open) fd.showModal();
+    };
+    $('#findIdBtn').addEventListener('click', () => showFind('id'));
+    $('#findPwBtn').addEventListener('click', () => showFind('pw'));
+    $('#toFindPw').addEventListener('click', () => showFind('pw'));
+    $('#findClose').addEventListener('click', () => fd.close());
+    $('#findPwView').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const m = $('#findMsg'), email = $('#findEmail').value.trim();
+      m.className = 'msg info'; m.textContent = '보내는 중…';
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin });
+      if (error) {
+        m.className = 'msg';
+        m.textContent = /rate|seconds|limit/i.test(error.message)
+          ? '메일을 너무 자주 보냈어요. 잠시 뒤(최대 1시간)에 다시 시도해 주세요.' : '보내지 못했어요: ' + error.message;
+        return;
+      }
+      // 가입 여부를 알려주지 않도록 항상 같은 안내 (다른 사람 이메일 가입 여부를 캐내지 못하게)
+      m.className = 'msg info';
+      m.textContent = '가입된 이메일이라면 재설정 메일이 곧 도착해요. 받은편지함과 스팸함을 확인해 주세요.';
+    });
+
+    // 메일 링크로 들어오면 새 비밀번호 창
+    const rd = $('#resetDlg');
+    $('#resetForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const m = $('#resetMsg'), pw = $('#resetPw').value, pw2 = $('#resetPw2').value;
+      m.className = 'msg';
+      if (!PW_OK.test(pw)) { m.textContent = '6~12자의 영문·숫자·특수문자로 만들어 주세요. (띄어쓰기·한글 불가)'; return; }
+      if (pw !== pw2) { m.textContent = '두 칸의 비밀번호가 서로 달라요.'; return; }
+      m.className = 'msg info'; m.textContent = '바꾸는 중…';
+      const { error } = await sb.auth.updateUser({ password: pw });
+      if (error) { m.className = 'msg'; m.textContent = '바꾸지 못했어요: ' + ko(error.message) + ' (메일 링크를 다시 받아 보세요)'; return; }
+      m.textContent = '비밀번호를 바꿨어요! 이제 새 비밀번호로 로그인돼 있어요.';
+      setTimeout(() => { rd.close(); $('#resetForm').reset(); }, 1500);
+    });
+
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') setTimeout(() => { document.querySelectorAll('dialog[open]').forEach(d => d.close()); rd.showModal(); }, 0);
+      setTimeout(() => handleSession(session), 0);
+    });
   }
 
+  // ---------- 시작 가이드 (처음 온 사람에게 할 일 안내) ----------
+  const GUIDE_OFF = 'haejugye-guide-off', GUIDE_CHART = 'haejugye-guide-chart';
+  const lsGet = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+  // 각 할 일을 끝냈는지: 따로 체크하지 않아도 지금 상태를 보고 자동으로 판단
+  function guideStatus() {
+    const pf = (user && state.profile) || {};
+    const hasBuy = state.buys.some(r => r.ticker && num(r.qty) > 0);
+    return {
+      login: !!user,
+      nick: !!pf.nickname,
+      animal: !!pf.animal,
+      village: !!pf.village,
+      car: !!(pf.village && pf.showCar),
+      buy: hasBuy,
+      chart: hasBuy && lsGet(GUIDE_CHART) === '1'
+    };
+  }
+  function updateGuide() {
+    const s = guideStatus(), keys = Object.keys(s), n = keys.filter(k => s[k]).length, all = n === keys.length;
+    keys.forEach(k => { const li = document.querySelector(`#guideDlg li[data-g="${k}"]`); if (li) li.classList.toggle('done', s[k]); });
+    $('#guideCount').textContent = `${n}/${keys.length}`;
+    $('#guideBtn').classList.toggle('done', all);
+    $('#guideBar').style.width = (n / keys.length * 100) + '%';
+    $('#guideProgTxt').textContent = `${n}/${keys.length}`;
+    $('#guideStep1Ok').textContent = ['login', 'nick', 'animal', 'village', 'car'].every(k => s[k]) ? '완료!' : '';
+    $('#guideStep2Ok').textContent = s.buy && s.chart ? '완료!' : '';
+    $('#guideDone').hidden = !all;
+    return all;
+  }
+  function pulse(el) {
+    if (!el) return;
+    el.classList.remove('guide-pulse'); void el.offsetWidth; el.classList.add('guide-pulse');
+    setTimeout(() => el.classList.remove('guide-pulse'), 3200);
+  }
+  const gDlg = $('#guideDlg');
+  function openGuide() { updateGuide(); $('#guideOff').checked = lsGet(GUIDE_OFF) === '1'; if (!gDlg.open) gDlg.showModal(); }
+  function closeGuide() { lsSet(GUIDE_OFF, $('#guideOff').checked ? '1' : '0'); if (gDlg.open) gDlg.close(); }
+  $('#guideBtn').addEventListener('click', openGuide);
+  $('#guideClose').addEventListener('click', closeGuide);
+  $('#guideOk').addEventListener('click', closeGuide);
+  gDlg.addEventListener('cancel', () => lsSet(GUIDE_OFF, $('#guideOff').checked ? '1' : '0'));   // Esc로 닫을 때
+  // [하러 가기]: 그 기능이 있는 곳으로 데려가고 반짝이게
+  gDlg.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-go]'); if (!b) return;
+    closeGuide();
+    const go = b.dataset.go;
+    if (go === 'login' || go === 'me') {
+      if (!sb) { alert('지금은 로그인 기능이 꺼져 있어요.'); return; }
+      if (!user) { pulse($('#authBtn')); $('#authBtn').click(); return; }
+      pulse($('#meBtn')); $('#meBtn').click();
+      setTimeout(() => {
+        const pf = state.profile;
+        const target = !pf.nickname ? '#meNick' : $('#meAnimals');
+        const el = typeof target === 'string' ? $(target) : target;
+        el.scrollIntoView({ block: 'center' }); pulse(el.closest('.me-sec'));
+        if (!pf.nickname) el.focus();
+      }, 60);
+    } else if (go === 'buy') {
+      kind = 'buys'; renderTrades();
+      $('#addBtn').closest('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      pulse($('#addBtn'));
+      if (!state.buys.length) setTimeout(() => $('#addBtn').click(), 500);   // 기록이 없으면 빈 줄을 하나 만들어 줌
+    } else if (go === 'chart') {
+      $('#chartCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      pulse($('#chartCard'));
+      setTimeout(guideChartCheck, 1200);   // 스크롤이 끝난 뒤 한 번 더 확인
+    }
+  });
+  // 그래프 확인: 내가 산 종목의 그래프가 그려진 상태로 화면에 보이면 완료
+  function guideChartCheck() {
+    if (lsGet(GUIDE_CHART) === '1' || !lineChart || !sel.value) return;
+    if (!state.buys.some(r => r.ticker === sel.value && num(r.qty) > 0)) return;
+    // '기간별 수익률' 막대그래프가 화면 안에 통째로 보일 때만 '봤다'고 판단
+    const r = $('#barChart').getBoundingClientRect();
+    if (r.height && r.top >= 0 && r.bottom <= innerHeight) { lsSet(GUIDE_CHART, '1'); updateGuide(); }
+  }
+  addEventListener('scroll', () => { if (lsGet(GUIDE_CHART) !== '1') guideChartCheck(); }, { passive: true });
+  // 처음 들어오면 (다 끝냈거나 '띄우지 않기'를 고른 경우가 아니면) 자동으로 띄움. 로그인 상태를 확인할 시간을 조금 둠
+  setTimeout(() => {
+    if (lsGet(GUIDE_OFF) === '1' || updateGuide() || document.querySelector('dialog[open]') || /type=recovery/.test(location.hash)) return;
+    openGuide();
+  }, 1500);
+
   // ---------- 시작 ----------
-  renderFilter(); renderTrades(); renderSelect(); refreshPortfolio(); loadFx(); loadGoodsImages(); renderVillage();
+  renderFilter(); renderTrades(); renderSelect(); refreshPortfolio(); loadFx(); loadGoodsImages(); renderVillage(); updateGuide();
 })();
 </script>
 </body>
